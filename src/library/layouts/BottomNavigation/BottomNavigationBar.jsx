@@ -13,6 +13,7 @@ const BottomNavigationBar = (props) => {
 
     return (
         <AppBar
+            component="nav"
             position="fixed"
             color="primary"
             style={{ top: "auto", bottom: 0 }}
