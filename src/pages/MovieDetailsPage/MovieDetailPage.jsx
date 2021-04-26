@@ -8,9 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import MovieMainDetails from "./layouts/MovieMainDetails";
 import MovieExtraDetails from "./layouts/MovieExtraDetails";
-
-const baseApiURL = "https://api.themoviedb.org/3/movie/";
-const baseImageUrl = "http://image.tmdb.org/t/p/";
+import * as Constants from "library/constants/constants";
 
 const MovieDetailsPage = (props) => {
     const [movieDetails, setMovieDetails] = useState({});
@@ -18,7 +16,7 @@ const MovieDetailsPage = (props) => {
 
     const fetchMovieDetails = useCallback(async () => {
         const response = await fetch(
-            `${baseApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
+            `${Constants.baseApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
         );
         const data = await response.json();
         setMovieDetails(data);
@@ -42,7 +40,7 @@ const MovieDetailsPage = (props) => {
             <Toolbar />
             <MovieMainDetails
                 {...movieDetails}
-                poster={`${baseImageUrl}w500${movieDetails.poster_path}`}
+                poster={`${Constants.baseImageUrl}w500${movieDetails.poster_path}`}
             />
             <MovieExtraDetails {...movieDetails} />
             <BottomNavigationBar />
