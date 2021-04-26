@@ -16,7 +16,7 @@ const MovieDetailsPage = (props) => {
 
     const fetchMovieDetails = useCallback(async () => {
         const response = await fetch(
-            `${Constants.baseApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
+            `${Constants.baseMovieApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
         );
         const data = await response.json();
         setMovieDetails(data);

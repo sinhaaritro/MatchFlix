@@ -5,16 +5,18 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import * as Constants from "library/constants/constants";
+import { NavLink } from "react-router-dom";
+
+const baseImageUrl = "http://image.tmdb.org/t/p/";
 
 const MovieList = ({ item }) => {
     return (
-        <>
-            <Grid item xs={4} key={item.id}>
+        <Grid item xs={4}>
+            <NavLink to={`/movie/${item.id}`}>
                 <Card variant="outlined">
                     <CardMedia
                         component="img"
-                        src={`${Constants.baseImageUrl}w500${item.poster_path}`}
+                        src={`${baseImageUrl}w500${item.poster_path}`}
                     />
                     <CardContent>
                         <Typography noWrap variant="body1">
@@ -25,8 +27,8 @@ const MovieList = ({ item }) => {
                         </Typography>
                     </CardContent>
                 </Card>
-            </Grid>
-        </>
+            </NavLink>
+        </Grid>
     );
 };
 
