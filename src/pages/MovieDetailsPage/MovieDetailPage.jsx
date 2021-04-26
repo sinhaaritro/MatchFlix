@@ -5,7 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import IconButton from "@material-ui/core/IconButton";
-import BottomNavigationBar from "../../library/layouts/BottomNavigation/BottomNavigationBar";
+import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import MovieMainDetails from "./layouts/MovieMainDetails";
 import MovieExtraDetails from "./layouts/MovieExtraDetails";
 

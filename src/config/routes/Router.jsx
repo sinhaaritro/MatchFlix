@@ -1,10 +1,10 @@
 import React from "react";
 // import PropTypes from "prop-types";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import MovieDetailsPage from "../../pages/MovieDetailsPage/MovieDetailPage";
-import GroupsPage from "../../pages/GroupsPage/GroupsPage";
-import MoviesPage from "../../pages/MoviesPage/MoviesPage";
-import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+import MovieDetailsPage from "pages/MovieDetailsPage/MovieDetailPage";
+import GroupsPage from "pages/GroupsPage/GroupsPage";
+import MoviesPage from "pages/MoviesPage/MoviesPage";
+import ProfilePage from "pages/ProfilePage/ProfilePage";
 
 const AppRouter = (props) => {
     return (

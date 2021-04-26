@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 // import PropTypes from "prop-types";
+import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import SearchMovies from "./layouts/SearchMovies";
 import MovieList from "./layouts/MovieList";
-import BottomNavigationBar from "../../library/layouts/BottomNavigation/BottomNavigationBar";
 
 const initailList = {
     page: 0,
