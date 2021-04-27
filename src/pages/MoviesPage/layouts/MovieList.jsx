@@ -7,7 +7,7 @@ import MovieCard from "./MovieCard";
 
 const MovieList = ({ query }) => {
     const { status, data: movieList } = useFetch(
-        `${Constants.baseSearchApiURL}?api_key=${process.env.REACT_APP_TMDB_API}&query=${query}&page=0}&include_adult=true`
+        `${Constants.baseTMDbApiURL}search/movie/?api_key=${process.env.REACT_APP_TMDB_API}&query=${query}&page=0}&include_adult=true`
     );
 
     return (

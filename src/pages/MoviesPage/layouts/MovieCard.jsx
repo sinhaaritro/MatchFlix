@@ -15,7 +15,7 @@ const MovieList = ({ item }) => {
                 <Card variant="outlined">
                     <CardMedia
                         component="img"
-                        src={`${Constants.baseImageUrl}w500${item.poster_path}`}
+                        src={`${Constants.baseTMDbImageUrl}w500${item.poster_path}`}
                     />
                     <CardContent>
                         <Typography noWrap variant="body1">

@@ -14,7 +14,7 @@ import * as Constants from "library/constants/constants";
 const MovieDetailsPage = (props) => {
     const { id: movieId } = useParams();
     const { status, data: movieDetails } = useFetch(
-        `${Constants.baseMovieApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
+        `${Constants.baseTMDbApiURL}movie/${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
     );
 
     return (
@@ -29,7 +29,7 @@ const MovieDetailsPage = (props) => {
             <Toolbar />
             <MovieMainDetails
                 {...movieDetails}
-                poster={`${Constants.baseImageUrl}w500${movieDetails.poster_path}`}
+                poster={`${Constants.baseTMDbImageUrl}w500${movieDetails.poster_path}`}
             />
             <MovieExtraDetails {...movieDetails} />
             <BottomNavigationBar />
