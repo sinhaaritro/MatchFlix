@@ -9,8 +9,7 @@ import MovieList from "./layouts/MovieList";
 const MoviesPage = (props) => {
     const [searchText, setSearchText] = useState("");
     const [url, setUrl] = useState("");
-    const { status, data } = useFetch(url);
-    const movieList = data;
+    const { status, data: movieList } = useFetch(url);
 
     const searchTextChanged = (newSearchText) => setSearchText(newSearchText);
 
@@ -22,7 +21,7 @@ const MoviesPage = (props) => {
             `${Constants.baseSearchApiURL}?api_key=${process.env.REACT_APP_TMDB_API}&query=${searchText}&page=0}&include_adult=true`
         );
     }, [searchText]);
-
+    console.log(status);
     return (
         <>
             <SearchMovies
@@ -30,7 +29,7 @@ const MoviesPage = (props) => {
                 onSearchClicked={onSearchClicked}
                 searchTextChanged={searchTextChanged}
             />
-            {data.results === undefined ? (
+            {movieList.results === undefined ? (
                 "Nothing here"
             ) : (
                 <MovieList list={movieList.results} />
