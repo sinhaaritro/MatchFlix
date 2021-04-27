@@ -7,18 +7,13 @@ const baseImageUrl = "http://image.tmdb.org/t/p/";
 
 const MovieMainDetails = ({
     original_title,
+    release_date,
     runtime,
     genres,
     popularity,
     vote_count,
     poster_path,
 }) => {
-    const styles = {
-        media: {
-            width: "100%",
-        },
-    };
-
     return (
         <>
             <Grid container spacing={3}>
@@ -26,7 +21,7 @@ const MovieMainDetails = ({
                     <img
                         src={`${baseImageUrl}w500${poster_path}`}
                         alt="movie poster"
-                        style={styles.media}
+                        style={{ width: "100%" }}
                     />
                 </Grid>
                 <Grid
@@ -40,6 +35,9 @@ const MovieMainDetails = ({
                 >
                     <Grid item>
                         <Typography variant="h5">{original_title}</Typography>
+                        <Typography variant="caption" color="textSecondary">
+                            {release_date.substring(0, 4)}
+                        </Typography>
                     </Grid>
                     <Grid item>
                         <Grid item>
@@ -62,6 +60,7 @@ const MovieMainDetails = ({
 MovieMainDetails.propTypes = {
     poster_path: PropTypes.string,
     original_title: PropTypes.string,
+    release_date: PropTypes.string,
     runtime: PropTypes.number,
     genres: PropTypes.array,
     popularity: PropTypes.number,

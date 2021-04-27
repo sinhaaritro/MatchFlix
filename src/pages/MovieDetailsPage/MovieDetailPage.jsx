@@ -5,6 +5,7 @@ import useFetch from "library/hooks/useFetch";
 import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import IconButton from "@material-ui/core/IconButton";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
@@ -27,14 +28,27 @@ const MovieDetailsPage = (props) => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <Toolbar />{" "}
-            <Box my={2}>
-                <MovieMainDetails
-                    {...movieDetails}
-                    poster={`${Constants.baseTMDbImageUrl}w500${movieDetails.poster_path}`}
-                />
-                <MovieExtraDetails {...movieDetails} />
-            </Box>
+            <Toolbar />
+            {status === Constants.apiStatus.LOADING && (
+                <Typography variant="caption" color="textSecondary">
+                    Loading...
+                </Typography>
+            )}
+            {status === Constants.apiStatus.ERROR && (
+                <Typography variant="caption" color="textSecondary">
+                    Error...
+                </Typography>
+            )}
+            {status === Constants.apiStatus.SUCCESS && (
+                <Box my={2}>
+                    <MovieMainDetails
+                        {...movieDetails}
+                        poster={`${Constants.baseTMDbImageUrl}w500${movieDetails.poster_path}`}
+                    />
+                    <MovieExtraDetails {...movieDetails} />
+                </Box>
+            )}
+
             <BottomNavigationBar />
         </>
     );
