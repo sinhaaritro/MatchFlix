@@ -2,6 +2,7 @@ import React from "react";
 // import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import useFetch from "library/hooks/useFetch";
+import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
@@ -26,12 +27,14 @@ const MovieDetailsPage = (props) => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <Toolbar />
-            <MovieMainDetails
-                {...movieDetails}
-                poster={`${Constants.baseTMDbImageUrl}w500${movieDetails.poster_path}`}
-            />
-            <MovieExtraDetails {...movieDetails} />
+            <Toolbar />{" "}
+            <Box my={2}>
+                <MovieMainDetails
+                    {...movieDetails}
+                    poster={`${Constants.baseTMDbImageUrl}w500${movieDetails.poster_path}`}
+                />
+                <MovieExtraDetails {...movieDetails} />
+            </Box>
             <BottomNavigationBar />
         </>
     );
