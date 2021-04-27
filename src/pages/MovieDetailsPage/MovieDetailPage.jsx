@@ -1,6 +1,7 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React from "react";
 // import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import useFetch from "library/hooks/useFetch";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
@@ -11,26 +12,14 @@ import MovieExtraDetails from "./layouts/MovieExtraDetails";
 import * as Constants from "library/constants/constants";
 
 const MovieDetailsPage = (props) => {
-    const [movieDetails, setMovieDetails] = useState({});
     const { id: movieId } = useParams();
-
-    const fetchMovieDetails = useCallback(async () => {
-        const response = await fetch(
-            `${Constants.baseMovieApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
-        );
-        const data = await response.json();
-        setMovieDetails(data);
-    }, [movieId]);
-
-    useEffect(() => {
-        if (movieId === null) return;
-        fetchMovieDetails();
-        return () => {};
-    }, [movieId, fetchMovieDetails]);
+    const { status, data: movieDetails } = useFetch(
+        `${Constants.baseMovieApiURL}${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
+    );
 
     return (
         <>
-            <AppBar>
+            <AppBar color="inherit">
                 <Toolbar>
                     <IconButton aria-label="search">
                         <ArrowBackRoundedIcon />
