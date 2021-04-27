@@ -1,17 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
-
-const apiStatus = {
-    LOADING: "LOADING",
-    SUCCESS: "SUCCESS",
-    ERROR: "ERROR",
-};
+import * as Constants from "library/constants/constants";
 
 const useFetch = (url) => {
     const [data, setData] = useState({});
-    const [status, setStatus] = useState(apiStatus.LOADING);
+    const [status, setStatus] = useState(Constants.apiStatus.LOADING);
 
     const fetchData = useCallback(async () => {
-        setStatus(apiStatus.LOADING);
+        setStatus(Constants.apiStatus.LOADING);
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -20,10 +15,10 @@ const useFetch = (url) => {
             }
             const data = await response.json();
             setData(data);
-            setStatus(apiStatus.SUCCESS);
+            setStatus(Constants.apiStatus.SUCCESS);
         } catch (e) {
             console.error(e);
-            setStatus(apiStatus.ERROR);
+            setStatus(Constants.apiStatus.ERROR);
         }
     }, [url]);
 
