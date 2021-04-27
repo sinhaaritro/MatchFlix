@@ -11,7 +11,10 @@ import * as Constants from "library/constants/constants";
 const MovieList = ({ item }) => {
     return (
         <Grid item xs={4}>
-            <NavLink to={`/movie/${item.id}`}>
+            <NavLink
+                to={`/movie/${item.id}`}
+                style={{ textDecoration: "none" }}
+            >
                 <Card variant="outlined">
                     <CardMedia
                         component="img"
