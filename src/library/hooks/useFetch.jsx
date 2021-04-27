@@ -14,6 +14,10 @@ const useFetch = (url) => {
         setStatus(apiStatus.LOADING);
         try {
             const response = await fetch(url);
+            if (!response.ok) {
+                // make the promise be rejected if we didn't get a 2xx response
+                throw new Error("Not 2xx response");
+            }
             const data = await response.json();
             setData(data);
             setStatus(apiStatus.SUCCESS);
