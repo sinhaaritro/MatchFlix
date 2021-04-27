@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import SearchMovies from "./layouts/SearchMovies";
@@ -21,7 +22,11 @@ const MoviesPage = (props) => {
                 searchTextChanged={searchTextChanged}
             />
             <Box my={2}>
-                {!searchText && "Nothing here. Type in search to get results"}
+                {!searchText && (
+                    <Typography variant="caption" color="textSecondary">
+                        Nothing here. Type in search to get results
+                    </Typography>
+                )}
                 {searchText && <MovieList query={searchText} />}
             </Box>
             <Toolbar />
