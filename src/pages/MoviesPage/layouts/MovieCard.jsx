@@ -6,12 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { NavLink } from "react-router-dom";
-<<<<<<< HEAD
-
-const baseImageUrl = "http://image.tmdb.org/t/p/";
-=======
 import * as Constants from "library/constants/constants";
->>>>>>> fix/refactoring
 
 const MovieList = ({ item }) => {
     return (
