@@ -31,7 +31,7 @@ const SearchMovies = ({ searchText, onSearchClicked, searchTextChanged }) => {
 
     return (
         <>
-            <AppBar>
+            <AppBar color="inherit">
                 <Toolbar>
                     <Grid container justify="center" direction="row">
                         <IconButton aria-label="search">
