@@ -43,12 +43,12 @@ const MovieMainDetails = ({
                     </Grid>
                     <Grid item>
                         <Grid item>
-                            <Typography variant="caption">
+                            <Typography variant="caption" color="textSecondary">
                                 {runtime} mins
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant="caption">
+                            <Typography variant="caption" color="textSecondary">
                                 {popularity} | {vote_count}
                             </Typography>
                         </Grid>

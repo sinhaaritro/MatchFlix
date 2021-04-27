@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 
 const MovieExtraDetails = ({ overview }) => {
-    return <div>{overview}</div>;
+    return <Typography color="textSecondary">{overview}</Typography>;
 };
 
 MovieExtraDetails.propTypes = {
