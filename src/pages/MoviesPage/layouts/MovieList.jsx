@@ -6,9 +6,17 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import MovieCard from "./MovieCard";
 
-const MovieList = ({ query }) => {
+const MovieList = ({
+    language,
+    query,
+    page,
+    include_adult,
+    region,
+    year,
+    primary_release_year,
+}) => {
     const { status, data: movieList } = useFetch(
-        `${Constants.baseTMDbApiURL}search/movie/?api_key=${process.env.REACT_APP_TMDB_API}&query=${query}&page=0}&include_adult=true`
+        `/api/tmdbMoviesSearch?query=${query}&page=${page}&include_adult=${include_adult}&language=${language}&region=${region}&year=${year}&primary_release_year=${primary_release_year}`
     );
 
     return (
@@ -35,7 +43,26 @@ const MovieList = ({ query }) => {
 };
 
 MovieList.propTypes = {
-    list: PropTypes.array,
+    query: PropTypes.string,
+    language: PropTypes.string,
+    region: PropTypes.string,
+    page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    primary_release_year: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
+    include_adult: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+MovieList.defaultProps = {
+    query: "null",
+    language: "null",
+    region: "null",
+    page: "1",
+    year: "null",
+    primary_release_year: "null",
+    include_adult: "null",
 };
 
 export default MovieList;

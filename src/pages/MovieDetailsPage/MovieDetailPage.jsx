@@ -14,9 +14,11 @@ import MovieExtraDetails from "./layouts/MovieExtraDetails";
 import * as Constants from "library/constants/constants";
 
 const MovieDetailsPage = (props) => {
+    const language = "null";
+    const append_to_response = "watch%2Fproviders,credits";
     const { id: movieId } = useParams();
     const { status, data: movieDetails } = useFetch(
-        `${Constants.baseTMDbApiURL}movie/${movieId}?api_key=${process.env.REACT_APP_TMDB_API}`
+        `/api/tmdbMoviesDetails?movieId=${movieId}&language=${language}&append_to_response=${append_to_response}`
     );
 
     return (
