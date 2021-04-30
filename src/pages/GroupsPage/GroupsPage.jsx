@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 
 const GroupsPage = (props) => {
-    console.log(data);
     return (
         <>
             <div>Groups Page</div>
