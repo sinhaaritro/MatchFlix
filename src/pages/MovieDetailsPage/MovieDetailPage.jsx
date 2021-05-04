@@ -50,7 +50,6 @@ const MovieDetailsPage = (props) => {
                     <MovieExtraDetails {...movieDetails} />
                 </Box>
             )}
-
             <BottomNavigationBar />
         </>
     );

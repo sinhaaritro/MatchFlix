@@ -2,7 +2,6 @@ import React, { useState } from "react";
 // import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import SearchMovies from "./layouts/SearchMovies";
 import MovieList from "./layouts/MovieList";
@@ -29,7 +28,6 @@ const MoviesPage = (props) => {
                 )}
                 {searchText && <MovieList query={searchText} />}
             </Box>
-            <Toolbar />
             <BottomNavigationBar />
         </>
     );
