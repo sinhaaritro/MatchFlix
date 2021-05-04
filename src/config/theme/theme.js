@@ -20,15 +20,20 @@ const theme = createMuiTheme({
             variant: "contained",
         },
     },
-    overrides: {
-        MuiFab: {
-            root: {
-                position: "fixed",
-                bottom: "5rem",
-                right: "2rem",
-            },
+    overrides: {},
+});
+
+theme.overrides = {
+    ...theme.overrides,
+    MuiFab: {
+        ...theme.MuiFab,
+        root: {
+            ...theme.root,
+            position: "fixed",
+            bottom: "5rem",
+            right: "2rem",
         },
     },
-});
+};
 
 export default theme;
