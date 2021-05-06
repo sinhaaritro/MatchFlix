@@ -4,8 +4,14 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import {
+    useAuthContext,
+    AuthConstants,
+} from "library/provider/Authentication/AuthProvider";
 
 const Login = ({ toogleLogIn }) => {
+    const { authState, authDispatch } = useAuthContext();
+
     return (
         <>
             <Grid
@@ -35,7 +41,16 @@ const Login = ({ toogleLogIn }) => {
                     />
                 </Grid>
                 <Grid item container direction="column" alignItems="center">
-                    <Button color="primary">Log in</Button>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            authDispatch({
+                                type: AuthConstants.ACTIONS.SIGNUP,
+                            });
+                        }}
+                    >
+                        Log in
+                    </Button>
                 </Grid>
             </Grid>
             <Grid
