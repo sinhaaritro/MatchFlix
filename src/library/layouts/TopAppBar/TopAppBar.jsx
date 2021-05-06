@@ -3,11 +3,9 @@ import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 
-function TopAppBar({ appBarText }) {
+function TopAppBar({ appBarText, appBarExtraIcon }) {
     return (
         <>
             <AppBar color="inherit">
@@ -16,9 +14,7 @@ function TopAppBar({ appBarText }) {
                         <Typography variant="h6" color="textPrimary">
                             {appBarText}
                         </Typography>
-                        <IconButton>
-                            <ExitToAppRoundedIcon />
-                        </IconButton>
+                        {appBarExtraIcon}
                     </Grid>
                 </Toolbar>
             </AppBar>
@@ -27,6 +23,9 @@ function TopAppBar({ appBarText }) {
     );
 }
 
-TopAppBar.propTypes = { appBarText: PropTypes.string };
+TopAppBar.propTypes = {
+    appBarText: PropTypes.string,
+    appBarExtraIcon: PropTypes.func,
+};
 
 export default TopAppBar;

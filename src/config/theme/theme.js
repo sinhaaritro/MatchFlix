@@ -19,8 +19,10 @@ const theme = createMuiTheme({
         MuiButton: {
             variant: "contained",
         },
+        MuiFab: {
+            color: "secondary",
+        },
     },
-    overrides: {},
 });
 
 theme.overrides = {
@@ -30,8 +32,8 @@ theme.overrides = {
         root: {
             ...theme.root,
             position: "fixed",
-            bottom: "5rem",
-            right: "2rem",
+            bottom: theme.spacing(10),
+            right: theme.spacing(4),
         },
     },
 };
