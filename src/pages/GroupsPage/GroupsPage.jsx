@@ -15,6 +15,7 @@ const GroupsPage = (props) => {
     if (!authState.isLogin) {
         return <Redirect to="/login" />;
     }
+
     return (
         <>
             <TopAppBar appBarText="Groups" />

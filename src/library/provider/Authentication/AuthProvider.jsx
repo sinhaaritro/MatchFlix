@@ -1,6 +1,15 @@
 import React, { useEffect, useContext, useReducer } from "react";
 import PropTypes from "prop-types";
 import firebase from "library/api/firebaseConfig";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signUserOut,
+} from "library/api/firebaseAuth";
+import {
+    getUserData,
+    createDataWithDocumentID,
+} from "library/api/firebaseFirestore";
 import reducer from "./AuthReducer";
 import * as AuthConstants from "./AuthConstants";
 
@@ -18,9 +27,14 @@ const AuthProvider = ({ children }) => {
         });
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                authDispatch({
-                    type: AuthConstants.ACTIONS.LOGGED_IN,
-                    payload: user,
+                getUserData(user.uid).then((userData) => {
+                    authDispatch({
+                        type: AuthConstants.ACTIONS.LOGGED_IN,
+                        payload: {
+                            currentUser: user,
+                            userProfile: userData,
+                        },
+                    });
                 });
             } else {
                 authDispatch({
@@ -31,86 +45,113 @@ const AuthProvider = ({ children }) => {
         });
     }, []);
 
-    const signUp = ({ username, email, password }) => {
+    const signUp = async ({ username, email, password }) => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((res) => {
-                firebase.firestore().collection("users").doc(res.user.uid).set({
+
+        try {
+            const createdUser = await createUserWithEmailAndPassword(
+                email,
+                password
+            );
+            await createDataWithDocumentID({
+                collectionName: "users",
+                documentID: createdUser.user.uid,
+                data: {
                     username: username,
-                });
-                return res.user;
-            })
-            .then((user) => {
-                authDispatch({
-                    type: AuthConstants.ACTIONS.LOGGED_IN,
-                    payload: user,
-                });
-            })
-            .catch((err) => {
-                console.error(err.code);
-                console.error(err.message);
-                authDispatch({
-                    type: AuthConstants.ACTIONS.ERROR,
-                });
+                    groupList: [],
+                },
             });
+            authDispatch({
+                type: AuthConstants.ACTIONS.LOGGED_IN,
+                payload: {
+                    currentUser: createdUser.user,
+                    userProfile: { groupList: [], username },
+                },
+            });
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
     };
 
-    const logIn = ({ email, password }) => {
+    const logIn = async ({ email, password }) => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                return userCredential.user;
-            })
-            .then((user) => {
-                authDispatch({
-                    type: AuthConstants.ACTIONS.LOGGED_IN,
-                    payload: user,
-                });
-            })
-            .catch((err) => {
-                console.error(err.code);
-                console.error(err.message);
-                authDispatch({
-                    type: AuthConstants.ACTIONS.ERROR,
-                });
+        try {
+            const currentUser = await signInWithEmailAndPassword(
+                email,
+                password
+            );
+            const userData = await getUserData(currentUser.user.uid);
+            authDispatch({
+                type: AuthConstants.ACTIONS.LOGGED_IN,
+                payload: {
+                    currentUser: currentUser.user,
+                    userProfile: userData,
+                },
             });
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
     };
 
-    const signOut = () => {
+    const signOut = async () => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
-        firebase
-            .auth()
-            .signOut()
-            .then((data) => {
-                authDispatch({
-                    type: AuthConstants.ACTIONS.LOGGED_OUT,
-                });
-            })
-            .catch((err) => {
-                console.error(err.code);
-                console.error(err.message);
-                authDispatch({
-                    type: AuthConstants.ACTIONS.ERROR,
-                });
+        try {
+            await signUserOut();
+            authDispatch({
+                type: AuthConstants.ACTIONS.LOGGED_OUT,
             });
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
     };
 
-    // const resetPasswordEmail = () => {};
+    // const resetPasswordEmail = async () => {};
 
-    // const userNameChange = () => {};
+    // const userNameChange = async () => {};
+
+    const updateProfile = async () => {
+        authDispatch({
+            type: AuthConstants.ACTIONS.LOADING,
+        });
+        try {
+            const userData = await getUserData(authState.currentUser.uid);
+            authDispatch({
+                type: AuthConstants.ACTIONS.UPDATE_USER,
+                payload: {
+                    userProfile: userData,
+                },
+            });
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
+    };
 
     return (
-        <AuthContext.Provider value={{ authState, logIn, signUp, signOut }}>
+        <AuthContext.Provider
+            value={{ authState, logIn, signUp, signOut, updateProfile }}
+        >
             {children}
         </AuthContext.Provider>
     );

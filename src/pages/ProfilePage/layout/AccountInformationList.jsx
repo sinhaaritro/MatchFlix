@@ -17,7 +17,7 @@ const AccountInformationList = (props) => {
             </ListSubheader>
             <AccountInformationListItem
                 listItemPrimaryText="Username"
-                ListItemSecondaryText="AAA#1234"
+                ListItemSecondaryText={authState.userProfile.username}
             />
             <AccountInformationListItem
                 listItemPrimaryText="Email"

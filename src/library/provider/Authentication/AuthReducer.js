@@ -5,7 +5,8 @@ const reducer = (state, action) => {
         case ACTIONS.LOGGED_IN: {
             return {
                 ...state,
-                currentUser: action.payload,
+                currentUser: action.payload.currentUser,
+                userProfile: action.payload.userProfile,
                 isLoading: false,
                 isLogin: true,
                 isError: false,
@@ -15,9 +16,16 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 currentUser: null,
+                userProfile: null,
                 isLoading: false,
                 isLogin: false,
                 isError: false,
+            };
+        }
+        case ACTIONS.UPDATE_USER: {
+            return {
+                ...state,
+                userProfile: action.payload.userProfile,
             };
         }
         case ACTIONS.LOADING: {
