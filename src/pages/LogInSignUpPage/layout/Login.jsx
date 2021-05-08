@@ -17,7 +17,7 @@ const Login = ({ toogleLogInForm }) => {
     };
 
     const handleSubmit = () => {
-        logIn(loginUser.email, loginUser.password);
+        logIn(loginUser);
     };
 
     return (

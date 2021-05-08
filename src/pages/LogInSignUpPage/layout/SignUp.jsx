@@ -10,6 +10,7 @@ const SignUp = ({ toogleLogInForm }) => {
     const { signUp } = useAuthContext();
 
     const [registerUser, setRegisterUser] = useState({
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -26,9 +27,10 @@ const SignUp = ({ toogleLogInForm }) => {
             registerUser.password.length > 5 &&
             registerUser.password === registerUser.confirmPassword
         )
-            signUp(registerUser.email, registerUser.password);
+            signUp(registerUser);
 
         setRegisterUser({
+            username: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -43,6 +45,18 @@ const SignUp = ({ toogleLogInForm }) => {
                 direction="column"
                 style={{ width: "100%" }}
             >
+                <Grid item>
+                    <TextField
+                        required
+                        fullWidth
+                        variant="outlined"
+                        name="username"
+                        label="Username"
+                        type="text"
+                        value={registerUser.username}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
                 <Grid item>
                     <TextField
                         required

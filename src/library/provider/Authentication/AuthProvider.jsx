@@ -12,8 +12,6 @@ const AuthProvider = ({ children }) => {
         AuthConstants.Initial_State
     );
 
-    console.log(authState);
-
     useEffect(() => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
@@ -33,16 +31,18 @@ const AuthProvider = ({ children }) => {
         });
     }, []);
 
-    const signUp = (email, password) => {
+    const signUp = ({ username, email, password }) => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
         firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                console.log(userCredential);
-                return userCredential.user;
+            .then((res) => {
+                firebase.firestore().collection("users").doc(res.user.uid).set({
+                    username: username,
+                });
+                return res.user;
             })
             .then((user) => {
                 authDispatch({
@@ -59,7 +59,7 @@ const AuthProvider = ({ children }) => {
             });
     };
 
-    const logIn = (email, password) => {
+    const logIn = ({ email, password }) => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
@@ -92,7 +92,6 @@ const AuthProvider = ({ children }) => {
             .auth()
             .signOut()
             .then((data) => {
-                console.log(data);
                 authDispatch({
                     type: AuthConstants.ACTIONS.LOGGED_OUT,
                 });
