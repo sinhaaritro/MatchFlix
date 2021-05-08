@@ -1,10 +1,13 @@
 export const ACTIONS = {
-    SIGNUP: "SIGNUP",
-    LOGIN: "LOGIN",
-    LOGOUT: "LOGOUT",
+    LOGGED_IN: "LOGGED_IN",
+    LOGGED_OUT: "LOGGED_OUT",
+    LOADING: "LOADING",
+    ERROR: "ERROR",
 };
 
 export const Initial_State = {
     isLogin: false,
-    accountID: "",
+    isLoading: false,
+    isError: false,
+    currentUser: null,
 };

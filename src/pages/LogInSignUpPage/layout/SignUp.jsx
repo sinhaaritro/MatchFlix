@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
-const SignUp = ({ toogleLogIn }) => {
+const SignUp = ({ toogleLogInForm }) => {
+    const { signUp } = useAuthContext();
+
+    const [registerUser, setRegisterUser] = useState({
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+    const handleInputChange = (e) => {
+        const inputName = e.target.name;
+        const inputValue = e.target.value;
+        setRegisterUser({ ...registerUser, [inputName]: inputValue });
+    };
+
+    const handleSubmit = () => {
+        if (
+            registerUser.password.length > 5 &&
+            registerUser.password === registerUser.confirmPassword
+        )
+            signUp(registerUser.email, registerUser.password);
+
+        setRegisterUser({
+            email: "",
+            password: "",
+            confirmPassword: "",
+        });
+    };
+
     return (
         <>
             <Grid
@@ -18,34 +47,42 @@ const SignUp = ({ toogleLogIn }) => {
                     <TextField
                         required
                         fullWidth
-                        id="email"
+                        variant="outlined"
+                        name="email"
                         label="Email"
                         type="email"
-                        variant="outlined"
+                        value={registerUser.email}
+                        onChange={handleInputChange}
                     />
                 </Grid>
                 <Grid item>
                     <TextField
                         required
                         fullWidth
-                        id="password"
+                        variant="outlined"
+                        name="password"
                         label="Password"
                         type="password"
-                        variant="outlined"
+                        value={registerUser.password}
+                        onChange={handleInputChange}
                     />
                 </Grid>
                 <Grid item>
                     <TextField
                         required
                         fullWidth
-                        id="confirm-password"
+                        variant="outlined"
+                        name="confirmPassword"
                         label="Confirm Password"
                         type="password"
-                        variant="outlined"
+                        value={registerUser.confirmPassword}
+                        onChange={handleInputChange}
                     />
                 </Grid>
                 <Grid item container direction="column" alignItems="center">
-                    <Button color="primary">Join</Button>
+                    <Button color="primary" onClick={handleSubmit}>
+                        Join
+                    </Button>
                 </Grid>
             </Grid>
             <Grid
@@ -62,7 +99,7 @@ const SignUp = ({ toogleLogIn }) => {
                     <Button
                         variant="text"
                         color="primary"
-                        onClick={toogleLogIn}
+                        onClick={toogleLogInForm}
                     >
                         Log In
                     </Button>
@@ -72,6 +109,6 @@ const SignUp = ({ toogleLogIn }) => {
     );
 };
 
-SignUp.propTypes = { toogleLogIn: PropTypes.func };
+SignUp.propTypes = { toogleLogInForm: PropTypes.func };
 
 export default SignUp;

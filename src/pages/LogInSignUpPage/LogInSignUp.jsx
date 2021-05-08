@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 // import PropTypes from 'prop-types'
+import { Redirect } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Login from "./layout/Login";
 import SignUp from "./layout/SignUp";
+import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
 const LogInSignUp = (props) => {
-    const [isLogIn, setIsLogIn] = useState(true);
+    const [isLogInForm, setIsLogInForm] = useState(true);
+    const { authState } = useAuthContext();
 
-    const toogleLogIn = () => {
-        if (isLogIn) setIsLogIn(false);
-        else setIsLogIn(true);
+    if (authState.isLogin) {
+        return <Redirect to="/" />;
+    }
+
+    const toogleLogInForm = () => {
+        if (isLogInForm) setIsLogInForm(false);
+        else setIsLogInForm(true);
     };
 
     return (
@@ -31,10 +38,10 @@ const LogInSignUp = (props) => {
                         />
                     </Grid>
                 </Box>
-                {isLogIn ? (
-                    <Login toogleLogIn={toogleLogIn} />
+                {isLogInForm ? (
+                    <Login toogleLogInForm={toogleLogInForm} />
                 ) : (
-                    <SignUp toogleLogIn={toogleLogIn} />
+                    <SignUp toogleLogInForm={toogleLogInForm} />
                 )}
             </Grid>
         </>

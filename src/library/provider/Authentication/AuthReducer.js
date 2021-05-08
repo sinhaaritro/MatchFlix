@@ -1,16 +1,38 @@
-import { ACTIONS, Initial_State } from "./AuthConstants";
+import { ACTIONS } from "./AuthConstants";
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case ACTIONS.SIGNUP: {
-            console.log(Initial_State.isLogin);
-            return state;
+        case ACTIONS.LOGGED_IN: {
+            return {
+                ...state,
+                currentUser: action.payload,
+                isLoading: false,
+                isLogin: true,
+                isError: false,
+            };
         }
-        case ACTIONS.LOGIN: {
-            return state;
+        case ACTIONS.LOGGED_OUT: {
+            return {
+                ...state,
+                currentUser: null,
+                isLoading: false,
+                isLogin: false,
+                isError: false,
+            };
         }
-        case ACTIONS.LOGOUT: {
-            return state;
+        case ACTIONS.LOADING: {
+            return {
+                ...state,
+                isLoading: true,
+                isError: false,
+            };
+        }
+        case ACTIONS.ERROR: {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true,
+            };
         }
         default:
             return state;
