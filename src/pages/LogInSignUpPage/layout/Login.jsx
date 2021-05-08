@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
-const Login = ({ toogleLogIn }) => {
+const Login = ({ toogleLogInForm }) => {
+    const { logIn } = useAuthContext();
+    const [loginUser, setLoginUser] = useState({ email: "", password: "" });
+
+    const handleInputChange = (e) => {
+        const inputName = e.target.name;
+        const inputValue = e.target.value;
+        setLoginUser({ ...loginUser, [inputName]: inputValue });
+    };
+
+    const handleSubmit = () => {
+        logIn(loginUser.email, loginUser.password);
+    };
+
     return (
         <>
             <Grid
@@ -18,24 +32,28 @@ const Login = ({ toogleLogIn }) => {
                     <TextField
                         required
                         fullWidth
-                        id="email"
+                        variant="outlined"
+                        name="email"
                         label="Email"
                         type="email"
-                        variant="outlined"
+                        onChange={handleInputChange}
                     />
                 </Grid>
                 <Grid item>
                     <TextField
                         required
                         fullWidth
-                        id="password"
+                        variant="outlined"
+                        name="password"
                         label="Password"
                         type="password"
-                        variant="outlined"
+                        onChange={handleInputChange}
                     />
                 </Grid>
                 <Grid item container direction="column" alignItems="center">
-                    <Button color="primary">Log in</Button>
+                    <Button color="primary" onClick={handleSubmit}>
+                        Log in
+                    </Button>
                 </Grid>
             </Grid>
             <Grid
@@ -52,7 +70,7 @@ const Login = ({ toogleLogIn }) => {
                     <Button
                         variant="text"
                         color="primary"
-                        onClick={toogleLogIn}
+                        onClick={toogleLogInForm}
                     >
                         Join Now
                     </Button>
@@ -62,6 +80,6 @@ const Login = ({ toogleLogIn }) => {
     );
 };
 
-Login.propTypes = { toogleLogIn: PropTypes.func };
+Login.propTypes = { toogleLogInForm: PropTypes.func };
 
 export default Login;

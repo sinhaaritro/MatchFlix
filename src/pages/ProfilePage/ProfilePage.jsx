@@ -1,5 +1,6 @@
 import React from "react";
 // import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -12,14 +13,21 @@ import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigati
 import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
 import CreditsList from "./layout/CreditsList";
 import AccountInformationList from "./layout/AccountInformationList";
+import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
 const ProfilePage = (props) => {
+    const { authState, signOut } = useAuthContext();
+
+    if (!authState.isLogin) {
+        return <Redirect to="/login" />;
+    }
+
     return (
         <>
             <TopAppBar
                 appBarText="User Settings"
                 appBarExtraIcon={
-                    <IconButton>
+                    <IconButton onClick={signOut}>
                         <ExitToAppRoundedIcon />
                     </IconButton>
                 }

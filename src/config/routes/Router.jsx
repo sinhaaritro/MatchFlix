@@ -11,8 +11,7 @@ const AppRouter = (props) => {
     return (
         <BrowserRouter>
             <Switch>
-                {/* <Route exact path="/" component={GroupsPage} /> */}
-                <Route exact path="/" component={LogInSignUp} />
+                <Route exact path="/" component={GroupsPage} />
                 <Route path="/login" component={LogInSignUp} />
                 <Route path="/movies" component={MoviesPage} />
                 <Route path="/movie/:id" component={MovieDetailsPage} />
