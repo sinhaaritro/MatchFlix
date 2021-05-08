@@ -25,7 +25,7 @@ function TopAppBar({ appBarText, appBarExtraIcon }) {
 
 TopAppBar.propTypes = {
     appBarText: PropTypes.string,
-    appBarExtraIcon: PropTypes.func,
+    appBarExtraIcon: PropTypes.node,
 };
 
 export default TopAppBar;
