@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         setLoading();
-        firebase.auth().onAuthStateChanged((user) => {
+        const authChangeListner = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 getUserData(user.uid).then((userData) => {
                     authDispatch({
@@ -58,6 +58,8 @@ const AuthProvider = ({ children }) => {
                 });
             }
         });
+
+        return () => authChangeListner();
     }, []);
 
     const signUp = async ({ username, email, password }) => {
