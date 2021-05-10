@@ -23,10 +23,22 @@ const AuthProvider = ({ children }) => {
         AuthConstants.Initial_State
     );
 
-    useEffect(() => {
+    const setLoading = () => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
+    };
+
+    const setError = (err) => {
+        console.error(err.code);
+        console.error(err.message);
+        authDispatch({
+            type: AuthConstants.ACTIONS.ERROR,
+        });
+    };
+
+    useEffect(() => {
+        setLoading();
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 getUserData(user.uid).then((userData) => {
@@ -48,10 +60,7 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const signUp = async ({ username, email, password }) => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
-
+        setLoading();
         try {
             const createdUser = await createUserWithEmailAndPassword(
                 email,
@@ -72,18 +81,12 @@ const AuthProvider = ({ children }) => {
                 },
             });
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
     const logIn = async ({ email, password }) => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
+        setLoading();
         try {
             const currentUser = await signInWithEmailAndPassword(
                 email,
@@ -98,29 +101,19 @@ const AuthProvider = ({ children }) => {
                 },
             });
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
     const signOut = async () => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
+        setLoading();
         try {
             await signUserOut();
             authDispatch({
                 type: AuthConstants.ACTIONS.LOGGED_OUT,
             });
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
@@ -129,9 +122,7 @@ const AuthProvider = ({ children }) => {
     // const userNameChange = async () => {};
 
     const createGroup = async ({ groupName }) => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
+        setLoading();
         try {
             const groupID = await createGroupData({
                 data: {
@@ -154,34 +145,22 @@ const AuthProvider = ({ children }) => {
             });
             return groupID.id;
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
     const joinGroup = async (groupName) => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
+        setLoading();
         try {
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
     const removeGroup = async () => {};
 
     const setUpdateProfile = async ({ userProfile }) => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
+        setLoading();
         try {
             await updateUserData({
                 id: authState.currentUser.uid,
@@ -192,32 +171,22 @@ const AuthProvider = ({ children }) => {
                 payload: { userProfile: userProfile },
             });
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
     const getUpdateProfile = async () => {
-        authDispatch({
-            type: AuthConstants.ACTIONS.LOADING,
-        });
+        setLoading();
         try {
-            const userData = await getUserData(authState.currentUser.uid);
+            const userProfile = await getUserData(authState.currentUser.uid);
             authDispatch({
                 type: AuthConstants.ACTIONS.UPDATE_USER,
                 payload: {
-                    userProfile: userData,
+                    userProfile: userProfile,
                 },
             });
         } catch (err) {
-            console.error(err.code);
-            console.error(err.message);
-            authDispatch({
-                type: AuthConstants.ACTIONS.ERROR,
-            });
+            setError(err);
         }
     };
 
