@@ -48,17 +48,27 @@ const createGroupData = async ({ data }) => {
         data: data,
     });
 };
-// const updateGroupData = async ({id, data}) =>
+
+const joinGroupData = async ({ documentID, data }) =>
+    await updateDataWithDocumentID({
+        collectionName: "groups",
+        documentID: documentID,
+        data: {
+            userSelectedCard: firebase.firestore.FieldValue.arrayUnion(data),
+        },
+    });
+
+const getGroupData = async ({ documentID }) =>
+    await getDataOfDocument({
+        collectionName: "groups",
+        documentID: documentID,
+    });
+
+// const updateGroupData = async ({ id }) =>
 //     await updateDataWithDocumentID({
 //         collectionName: "groups",
 //         documentID: id,
 //         data: data,
-//     });
-
-// const getGroupData = async (id) =>
-//     await getDataOfDocument({
-//         collectionName: "groups",
-//         documentID: id,
 //     });
 
 export {
@@ -70,4 +80,6 @@ export {
     updateUserData,
     getUserData,
     createGroupData,
+    joinGroupData,
+    getGroupData,
 };

@@ -39,7 +39,8 @@ const CreateJoinGroupButtons = (props) => {
 
     const createJoinGroup = async () => {
         closeJoinDialogOpen();
-        //const groupID = await joinGroup({ groupName: inputText });
+        await joinGroup({ groupCode: inputText });
+        setInputText("");
     };
 
     return (

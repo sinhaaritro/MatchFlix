@@ -11,6 +11,8 @@ import {
     createUserData,
     updateUserData,
     createGroupData,
+    joinGroupData,
+    getGroupData,
 } from "library/api/firebaseFirestore";
 import reducer from "./AuthReducer";
 import * as AuthConstants from "./AuthConstants";
@@ -30,8 +32,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const setError = (err) => {
-        console.error(err.code);
-        console.error(err.message);
+        console.log(err);
         authDispatch({
             type: AuthConstants.ACTIONS.ERROR,
         });
@@ -149,9 +150,30 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const joinGroup = async (groupName) => {
+    const joinGroup = async ({ groupCode }) => {
         setLoading();
         try {
+            const filteredList = authState.userProfile.groupList.filter(
+                (group) => group.groupID === groupCode
+            );
+            if (filteredList.length !== 0) throw new Error("Already in group");
+
+            await joinGroupData({
+                documentID: groupCode,
+                data: { selectedCard: [], userID: authState.currentUser.uid },
+            });
+
+            const groupData = await getGroupData({ documentID: groupCode });
+
+            await setUpdateProfile({
+                userProfile: {
+                    groupList: [
+                        ...authState.userProfile.groupList,
+                        { groupID: groupCode, groupName: groupData.groupName },
+                    ],
+                    username: authState.userProfile.username,
+                },
+            });
         } catch (err) {
             setError(err);
         }
