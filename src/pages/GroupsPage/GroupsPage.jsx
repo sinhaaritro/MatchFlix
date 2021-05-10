@@ -2,10 +2,8 @@ import React from "react";
 // import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
+import GroupListItem from "./layouts/GroupListItem";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import CreateJoinGroupFAB from "./layouts/CreateJoinGroupFAB";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
@@ -19,54 +17,22 @@ const GroupsPage = (props) => {
     return (
         <>
             <TopAppBar appBarText="Groups" />
-            <List>
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={() => {}}>
-                    <ListItemText primary="group name" secondary="people(3)" />
-                </ListItem>
-                <Divider />
-            </List>
+            {authState.userProfile.groupList.length ? (
+                <List>
+                    {authState.userProfile.groupList.map((item) => (
+                        <GroupListItem item={item} key={item.groupName} />
+                    ))}
+                </List>
+            ) : (
+                "No list"
+            )}
+
             <CreateJoinGroupFAB />
             <BottomNavigationBar />
         </>
     );
 };
 
-// GroupsPage.propTypes = {};
+GroupsPage.propTypes = {};
 
 export default GroupsPage;

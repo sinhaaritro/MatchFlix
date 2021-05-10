@@ -6,24 +6,33 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
 
-const CreateJoinDialog = ({
+const CreateGroupDialog = ({
     isOpen,
-    dialogTitle,
-    dialogContentText,
-    secondaryAction,
-    primaryAction,
+    inputText,
+    textChange,
     handlePrimaryAction,
     handleSecondaryAction,
-    children,
 }) => {
     return (
         <>
             <Dialog open={isOpen} aria-labelledby="create group dialog">
-                <DialogTitle>{dialogTitle}</DialogTitle>
+                <DialogTitle>Enter Group Code</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{dialogContentText}</DialogContentText>
-                    {children}
+                    <DialogContentText>
+                        Add group code from your friends, to join the group.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        fullWidth
+                        id="name"
+                        label="Group Code"
+                        type="text"
+                        value={inputText}
+                        onChange={textChange}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -31,10 +40,10 @@ const CreateJoinDialog = ({
                         onClick={handleSecondaryAction}
                         color="primary"
                     >
-                        {secondaryAction}
+                        Cancel
                     </Button>
                     <Button onClick={handlePrimaryAction} color="primary">
-                        {primaryAction}
+                        Join
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -42,15 +51,12 @@ const CreateJoinDialog = ({
     );
 };
 
-CreateJoinDialog.propTypes = {
+CreateGroupDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    dialogTitle: PropTypes.string.isRequired,
-    dialogContentText: PropTypes.string.isRequired,
-    secondaryAction: PropTypes.string,
-    primaryAction: PropTypes.string,
+    inputText: PropTypes.string,
+    textChange: PropTypes.func,
     handlePrimaryAction: PropTypes.func,
     handleSecondaryAction: PropTypes.func,
-    children: PropTypes.node,
 };
 
-export default CreateJoinDialog;
+export default CreateGroupDialog;

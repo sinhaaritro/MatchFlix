@@ -1,20 +1,17 @@
 import firebase from "library/api/firebaseConfig";
 
-const createDataWithoutDocumentID = async ({ collectionName, data }) => {
-    return firebase.firestore.collection(collectionName).doc().set(data);
-};
+const createDataWithoutDocumentID = async ({ collectionName, data }) =>
+    await firebase.firestore().collection(collectionName).add(data);
 
-const createDataWithDocumentID = async ({
-    collectionName,
-    documentID,
-    data,
-}) => {
-    return firebase
+const createDataWithDocumentID = async ({ collectionName, documentID, data }) =>
+    firebase.firestore().collection(collectionName).doc(documentID).set(data);
+
+const updateDataWithDocumentID = async ({ collectionName, documentID, data }) =>
+    firebase
         .firestore()
         .collection(collectionName)
         .doc(documentID)
-        .set(data);
-};
+        .update(data);
 
 const getDataOfDocument = async ({ collectionName, documentID }) => {
     const getDoc = await firebase
@@ -25,15 +22,52 @@ const getDataOfDocument = async ({ collectionName, documentID }) => {
     return getDoc.data();
 };
 
+const createUserData = async ({ id, data }) =>
+    await createDataWithDocumentID({
+        collectionName: "users",
+        documentID: id,
+        data: data,
+    });
+
+const updateUserData = async ({ id, data }) =>
+    await updateDataWithDocumentID({
+        collectionName: "users",
+        documentID: id,
+        data: data,
+    });
+
 const getUserData = async (id) =>
     await getDataOfDocument({
         collectionName: "users",
         documentID: id,
     });
 
+const createGroupData = async ({ data }) => {
+    return await createDataWithoutDocumentID({
+        collectionName: "groups",
+        data: data,
+    });
+};
+// const updateGroupData = async ({id, data}) =>
+//     await updateDataWithDocumentID({
+//         collectionName: "groups",
+//         documentID: id,
+//         data: data,
+//     });
+
+// const getGroupData = async (id) =>
+//     await getDataOfDocument({
+//         collectionName: "groups",
+//         documentID: id,
+//     });
+
 export {
     createDataWithoutDocumentID,
     createDataWithDocumentID,
+    updateDataWithDocumentID,
     getDataOfDocument,
+    createUserData,
+    updateUserData,
     getUserData,
+    createGroupData,
 };

@@ -8,7 +8,9 @@ import {
 } from "library/api/firebaseAuth";
 import {
     getUserData,
-    createDataWithDocumentID,
+    createUserData,
+    updateUserData,
+    createGroupData,
 } from "library/api/firebaseFirestore";
 import reducer from "./AuthReducer";
 import * as AuthConstants from "./AuthConstants";
@@ -55,9 +57,8 @@ const AuthProvider = ({ children }) => {
                 email,
                 password
             );
-            await createDataWithDocumentID({
-                collectionName: "users",
-                documentID: createdUser.user.uid,
+            await createUserData({
+                id: createdUser.user.uid,
                 data: {
                     username: username,
                     groupList: [],
@@ -127,7 +128,79 @@ const AuthProvider = ({ children }) => {
 
     // const userNameChange = async () => {};
 
-    const updateProfile = async () => {
+    const createGroup = async ({ groupName }) => {
+        authDispatch({
+            type: AuthConstants.ACTIONS.LOADING,
+        });
+        try {
+            const groupID = await createGroupData({
+                data: {
+                    groupName: groupName,
+                    allCard: [],
+                    selectedCard: [],
+                    userSelectedCard: [
+                        { selectedCard: [], userID: authState.currentUser.uid },
+                    ],
+                },
+            });
+            await setUpdateProfile({
+                userProfile: {
+                    groupList: [
+                        ...authState.userProfile.groupList,
+                        { groupID: groupID.id, groupName: groupName },
+                    ],
+                    username: authState.userProfile.username,
+                },
+            });
+            return groupID.id;
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
+    };
+
+    const joinGroup = async (groupName) => {
+        authDispatch({
+            type: AuthConstants.ACTIONS.LOADING,
+        });
+        try {
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
+    };
+
+    const removeGroup = async () => {};
+
+    const setUpdateProfile = async ({ userProfile }) => {
+        authDispatch({
+            type: AuthConstants.ACTIONS.LOADING,
+        });
+        try {
+            await updateUserData({
+                id: authState.currentUser.uid,
+                data: userProfile,
+            });
+            authDispatch({
+                type: AuthConstants.ACTIONS.UPDATE_USER,
+                payload: { userProfile: userProfile },
+            });
+        } catch (err) {
+            console.error(err.code);
+            console.error(err.message);
+            authDispatch({
+                type: AuthConstants.ACTIONS.ERROR,
+            });
+        }
+    };
+
+    const getUpdateProfile = async () => {
         authDispatch({
             type: AuthConstants.ACTIONS.LOADING,
         });
@@ -150,7 +223,17 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ authState, logIn, signUp, signOut, updateProfile }}
+            value={{
+                authState,
+                logIn,
+                signUp,
+                signOut,
+                createGroup,
+                joinGroup,
+                removeGroup,
+                setUpdateProfile,
+                getUpdateProfile,
+            }}
         >
             {children}
         </AuthContext.Provider>

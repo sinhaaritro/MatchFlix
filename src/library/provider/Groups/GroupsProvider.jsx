@@ -12,7 +12,7 @@ const GroupsProvider = ({ children }) => {
         reducer,
         GroupConstants.Initial_State
     );
-    console.log(authState);
+
     return (
         <GroupContext.Provider value={{ groupsState }}>
             {children}

@@ -4,81 +4,70 @@ import GroupRoundedIcon from "@material-ui/icons/GroupRounded";
 import theme from "config/theme/theme";
 import Fab from "@material-ui/core/Fab";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import TextField from "@material-ui/core/TextField";
-import CreateJoinDialog from "./CreateJoinDialog";
-
-const initialDialogState = {
-    isOpen: false,
-    dialogTitle: "",
-    dialogContentText: "",
-    primaryAction: "",
-    secondaryAction: "Cancel",
-    handleSecondaryAction: null,
-    children: null,
-};
+import CreateGroupDialog from "./CreateGroupDialog";
+import CopyGroupDialog from "./CopyGroupDialog";
+import JoinGroupDialog from "./JoinGroupDialog";
+import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
 const CreateJoinGroupButtons = (props) => {
-    const [dialog, setDialog] = useState(initialDialogState);
+    const { createGroup, joinGroup } = useAuthContext();
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false);
+    const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
+    const [inputText, setInputText] = useState("");
 
-    const closeDialog = () => {
-        setDialog(initialDialogState);
+    const openCreateDialogOpen = () => setIsCreateDialogOpen(true);
+    const closeCreateDialogOpen = () => setIsCreateDialogOpen(false);
+
+    const openCopyDialogOpen = () => setIsCopyDialogOpen(true);
+    const closeCopyDialogOpen = () => {
+        setIsCopyDialogOpen(false);
+        setInputText("");
     };
 
-    const toggleCreateGroupClick = () => {
-        if (dialog.isOpen === false)
-            setDialog({
-                ...dialog,
-                isOpen: true,
-                dialogTitle: "Create New Group",
-                dialogContentText:
-                    "Create a group to add your friends for movie selecting.",
-                primaryAction: "Create",
-                secondaryAction: "Cancel",
-                // handlePrimaryAction: toggleGroupClick,
-                children: (
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Group Name"
-                        type="text"
-                        fullWidth
-                    />
-                ),
-            });
+    const openJoinDialogOpen = () => setIsJoinDialogOpen(true);
+    const closeJoinDialogOpen = () => setIsJoinDialogOpen(false);
+
+    const textChange = (e) => setInputText(e.target.value);
+
+    const createNewGroup = async () => {
+        closeCreateDialogOpen();
+        const groupID = await createGroup({ groupName: inputText });
+        setInputText(groupID);
+        openCopyDialogOpen();
     };
 
-    const toggleJoinGroupClick = () => {
-        if (dialog.isOpen === false)
-            setDialog({
-                ...dialog,
-                isOpen: true,
-                dialogTitle: "Enter Group Code",
-                dialogContentText:
-                    "Add group code from your friends, to join the group.",
-                primaryAction: "Join",
-                secondaryAction: "Cancel",
-                // handlePrimaryAction: toggleGroupClick,
-                children: (
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Group Code"
-                        type="text"
-                        fullWidth
-                    />
-                ),
-            });
+    const createJoinGroup = async () => {
+        closeJoinDialogOpen();
+        //const groupID = await joinGroup({ groupName: inputText });
     };
 
     return (
         <>
-            <CreateJoinDialog {...dialog} handleSecondaryAction={closeDialog} />
+            <CreateGroupDialog
+                isOpen={isCreateDialogOpen}
+                inputText={inputText}
+                textChange={textChange}
+                handlePrimaryAction={createNewGroup}
+                handleSecondaryAction={closeCreateDialogOpen}
+            />
+            <CopyGroupDialog
+                isOpen={isCopyDialogOpen}
+                inputText={inputText}
+                textChange={textChange}
+                handleSecondaryAction={closeCopyDialogOpen}
+            />
+            <JoinGroupDialog
+                isOpen={isJoinDialogOpen}
+                inputText={inputText}
+                textChange={textChange}
+                handlePrimaryAction={createJoinGroup}
+                handleSecondaryAction={closeJoinDialogOpen}
+            />
             <Fab
                 size="medium"
                 aria-label="create group"
-                onClick={toggleCreateGroupClick}
+                onClick={openCreateDialogOpen}
                 style={{
                     bottom: theme.spacing(20),
                     right: theme.spacing(4.5),
@@ -89,7 +78,7 @@ const CreateJoinGroupButtons = (props) => {
             <Fab
                 size="medium"
                 aria-label="join group"
-                onClick={toggleJoinGroupClick}
+                onClick={openJoinDialogOpen}
                 style={{
                     bottom: theme.spacing(29),
                     right: theme.spacing(4.5),
