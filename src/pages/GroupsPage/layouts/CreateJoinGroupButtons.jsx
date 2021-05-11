@@ -4,9 +4,9 @@ import GroupRoundedIcon from "@material-ui/icons/GroupRounded";
 import theme from "config/theme/theme";
 import Fab from "@material-ui/core/Fab";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import CreateGroupDialog from "./CreateGroupDialog";
-import CopyGroupDialog from "./CopyGroupDialog";
-import JoinGroupDialog from "./JoinGroupDialog";
+import CreateGroupDialog from "library/layouts/Dialogs/CreateGroupDialog";
+import CopyGroupDialog from "library/layouts/Dialogs/CopyGroupDialog";
+import JoinGroupDialog from "library/layouts/Dialogs/JoinGroupDialog";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
 const CreateJoinGroupButtons = (props) => {
