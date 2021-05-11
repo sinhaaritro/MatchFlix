@@ -31,8 +31,8 @@ const AuthProvider = ({ children }) => {
         });
     };
 
-    const setError = (err) => {
-        console.log(err);
+    const setError = (error) => {
+        console.log(error);
         authDispatch({
             type: AuthConstants.ACTIONS.ERROR,
         });
@@ -83,8 +83,8 @@ const AuthProvider = ({ children }) => {
                     userProfile: { groupList: [], username },
                 },
             });
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
@@ -103,8 +103,8 @@ const AuthProvider = ({ children }) => {
                     userProfile: userData,
                 },
             });
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
@@ -115,8 +115,8 @@ const AuthProvider = ({ children }) => {
             authDispatch({
                 type: AuthConstants.ACTIONS.LOGGED_OUT,
             });
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
@@ -147,8 +147,8 @@ const AuthProvider = ({ children }) => {
                 },
             });
             return groupID.id;
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
@@ -176,12 +176,27 @@ const AuthProvider = ({ children }) => {
                     username: authState.userProfile.username,
                 },
             });
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
-    const removeGroup = async () => {};
+    const removeGroup = async ({ groupCode }) => {
+        setLoading();
+        try {
+            const filteredList = authState.userProfile.groupList.filter(
+                (group) => group.groupID !== groupCode
+            );
+            await setUpdateProfile({
+                userProfile: {
+                    groupList: filteredList,
+                    username: authState.userProfile.username,
+                },
+            });
+        } catch (error) {
+            setError(error);
+        }
+    };
 
     const setUpdateProfile = async ({ userProfile }) => {
         setLoading();
@@ -194,8 +209,8 @@ const AuthProvider = ({ children }) => {
                 type: AuthConstants.ACTIONS.UPDATE_USER,
                 payload: { userProfile: userProfile },
             });
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
@@ -209,8 +224,8 @@ const AuthProvider = ({ children }) => {
                     userProfile: userProfile,
                 },
             });
-        } catch (err) {
-            setError(err);
+        } catch (error) {
+            setError(error);
         }
     };
 
