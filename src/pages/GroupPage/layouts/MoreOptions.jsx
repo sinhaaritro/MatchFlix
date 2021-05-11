@@ -12,20 +12,16 @@ import Popover from "@material-ui/core/Popover";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import TextField from "@material-ui/core/TextField";
 import MoreVertRoundedIcon from "@material-ui/icons/MoreVertRounded";
-import CreateGroupDialog from "library/layouts/Dialogs/CreateGroupDialog";
-import CopyGroupDialog from "library/layouts/Dialogs/CopyGroupDialog";
+import DialogModal from "library/layouts/Dialogs/DialogModal";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 import { useGroupContext } from "library/provider/Groups/GroupProvider";
 
 const MoreOptions = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const handlePopoverClick = (event) => setAnchorEl(event.currentTarget);
+    const handlePopoverClose = () => setAnchorEl(null);
     const open = Boolean(anchorEl);
     const popoverOpen = open ? "simple-popover" : undefined;
 
@@ -33,20 +29,20 @@ const MoreOptions = (props) => {
         useGroupContext();
 
     const { id } = useParams();
-    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-    const openCreateDialogOpen = () => setIsCreateDialogOpen(true);
-    const closeCreateDialogOpen = () => setIsCreateDialogOpen(false);
+    const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
+    const openRenameDialogOpen = () => setIsRenameDialogOpen(true);
+    const closeRenameDialogOpen = () => setIsRenameDialogOpen(false);
     const [inputText, setInputText] = useState(groupState.selectedGroupName);
     const textChange = (e) => setInputText(e.target.value);
     const renameGroup = async () => {
-        openCreateDialogOpen();
+        openRenameDialogOpen();
         renameGroupName({ groupId: id, newGroupName: inputText });
-        closeCreateDialogOpen();
+        closeRenameDialogOpen();
     };
 
-    const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false);
-    const openCopyDialogOpen = () => setIsCopyDialogOpen(true);
-    const closeCopyDialogOpen = () => setIsCopyDialogOpen(false);
+    const [isInviteLinkDialogOpen, setIsInviteLinkDialogOpen] = useState(false);
+    const openInviteLinkDialog = () => setIsInviteLinkDialogOpen(true);
+    const closeInviteLinkDialog = () => setIsInviteLinkDialogOpen(false);
 
     const { authState, removeGroup } = useAuthContext();
 
@@ -62,14 +58,17 @@ const MoreOptions = (props) => {
 
     return (
         <>
-            <IconButton aria-describedby={popoverOpen} onClick={handleClick}>
+            <IconButton
+                aria-describedby={popoverOpen}
+                onClick={handlePopoverClick}
+            >
                 <MoreVertRoundedIcon />
             </IconButton>
             <Popover
                 id={popoverOpen}
                 open={open}
                 anchorEl={anchorEl}
-                onClose={handleClose}
+                onClose={handlePopoverClose}
                 anchorOrigin={{
                     vertical: "top",
                     horizontal: "right",
@@ -80,10 +79,10 @@ const MoreOptions = (props) => {
                 }}
             >
                 <List component="nav" aria-label="more action items">
-                    <ListItem button onClick={openCreateDialogOpen}>
+                    <ListItem button onClick={openRenameDialogOpen}>
                         <ListItemText primary="Rename Group" />
                     </ListItem>
-                    <ListItem button onClick={openCopyDialogOpen}>
+                    <ListItem button onClick={openInviteLinkDialog}>
                         <ListItemText primary="Invite Link" />
                     </ListItem>
                     <ListItem button>
@@ -94,18 +93,44 @@ const MoreOptions = (props) => {
                     </ListItem>
                 </List>
             </Popover>
-            <CopyGroupDialog
-                isOpen={isCopyDialogOpen}
-                inputText={id}
-                handleSecondaryAction={closeCopyDialogOpen}
-            />
-            <CreateGroupDialog
-                isOpen={isCreateDialogOpen}
-                inputText={inputText}
-                textChange={textChange}
+            <DialogModal
+                isOpen={isRenameDialogOpen}
+                dialogTitle="New Group Name"
+                dialogContentText="Give your group a new interesing name."
+                primaryActiontext="Rename"
                 handlePrimaryAction={renameGroup}
-                handleSecondaryAction={closeCreateDialogOpen}
-            />
+                secondaryActionText="Cancel"
+                handleSecondaryAction={closeRenameDialogOpen}
+            >
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    id="name"
+                    label="New Group Name"
+                    type="text"
+                    value={inputText}
+                    onChange={textChange}
+                />
+            </DialogModal>
+            <DialogModal
+                isOpen={isInviteLinkDialogOpen}
+                dialogTitle="Invite Link"
+                dialogContentText="Give this link to your friend, to join the group you
+                        created."
+                secondaryActionText="Close"
+                handleSecondaryAction={closeInviteLinkDialog}
+            >
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    id="name"
+                    label="Group Link"
+                    type="text"
+                    value={id}
+                />
+            </DialogModal>
         </>
     );
 };

@@ -4,9 +4,8 @@ import GroupRoundedIcon from "@material-ui/icons/GroupRounded";
 import theme from "config/theme/theme";
 import Fab from "@material-ui/core/Fab";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import CreateGroupDialog from "library/layouts/Dialogs/CreateGroupDialog";
-import CopyGroupDialog from "library/layouts/Dialogs/CopyGroupDialog";
-import JoinGroupDialog from "library/layouts/Dialogs/JoinGroupDialog";
+import TextField from "@material-ui/core/TextField";
+import DialogModal from "library/layouts/Dialogs/DialogModal";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 
 const CreateJoinGroupButtons = (props) => {
@@ -45,26 +44,64 @@ const CreateJoinGroupButtons = (props) => {
 
     return (
         <>
-            <CreateGroupDialog
+            <DialogModal
                 isOpen={isCreateDialogOpen}
-                inputText={inputText}
-                textChange={textChange}
+                dialogTitle="Create New Group"
+                dialogContentText="Create a group to add your friends for movie selecting."
+                primaryActiontext="Create"
                 handlePrimaryAction={createNewGroup}
+                secondaryActionText="Cancel"
                 handleSecondaryAction={closeCreateDialogOpen}
-            />
-            <CopyGroupDialog
+            >
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    id="name"
+                    label="Group Name"
+                    type="text"
+                    value={inputText}
+                    onChange={textChange}
+                />
+            </DialogModal>
+            <DialogModal
                 isOpen={isCopyDialogOpen}
-                inputText={inputText}
-                textChange={textChange}
+                dialogTitle="Group Link"
+                dialogContentText="Give this link to your friend, to join the group you
+                        created."
+                secondaryActionText="Close"
                 handleSecondaryAction={closeCopyDialogOpen}
-            />
-            <JoinGroupDialog
+            >
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    id="name"
+                    label="Group Link"
+                    type="text"
+                    value={inputText}
+                />
+            </DialogModal>
+            <DialogModal
                 isOpen={isJoinDialogOpen}
-                inputText={inputText}
-                textChange={textChange}
+                dialogTitle="Enter Group Code"
+                dialogContentText="Add group code from your friends, to join the group."
+                primaryActiontext="Join"
                 handlePrimaryAction={createJoinGroup}
+                secondaryActionText="Cancel"
                 handleSecondaryAction={closeJoinDialogOpen}
-            />
+            >
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    id="name"
+                    label="Group Name"
+                    type="text"
+                    value={inputText}
+                    onChange={textChange}
+                />
+            </DialogModal>
             <Fab
                 size="medium"
                 aria-label="create group"
