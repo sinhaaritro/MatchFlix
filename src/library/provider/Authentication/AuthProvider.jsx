@@ -133,7 +133,11 @@ const AuthProvider = ({ children }) => {
                     allCard: [],
                     selectedCard: [],
                     userSelectedCard: [
-                        { selectedCard: [], userID: authState.currentUser.uid },
+                        {
+                            selectedCard: [],
+                            userID: authState.currentUser.uid,
+                            userName: authState.userProfile.username,
+                        },
                     ],
                 },
             });
@@ -162,7 +166,11 @@ const AuthProvider = ({ children }) => {
 
             await joinGroupData({
                 documentID: groupCode,
-                data: { selectedCard: [], userID: authState.currentUser.uid },
+                data: {
+                    selectedCard: [],
+                    userID: authState.currentUser.uid,
+                    userName: authState.userProfile.username,
+                },
             });
 
             const groupData = await getGroupData({ documentID: groupCode });
