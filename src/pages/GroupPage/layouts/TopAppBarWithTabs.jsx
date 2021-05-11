@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import MoreOptions from "./MoreOptions";
+import MemberTab from "./MemberTab";
+import CardTab from "./CardTab";
 
 const TopAppBarWithTabs = ({ groupName }) => {
     const [tabValue, setTabValue] = useState(0);
@@ -28,8 +30,12 @@ const TopAppBarWithTabs = ({ groupName }) => {
                     </Tabs>
                 </Paper>
             </TopAppBar>
-            <Box hidden={tabValue !== 0}>Tab 1</Box>
-            <Box hidden={tabValue !== 1}>Tab 2</Box>
+            <Box hidden={tabValue !== 0}>
+                <CardTab />
+            </Box>
+            <Box hidden={tabValue !== 1}>
+                <MemberTab />
+            </Box>
         </>
     );
 };
