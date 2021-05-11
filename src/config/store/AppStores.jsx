@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthProvider } from "library/provider/Authentication/AuthProvider";
-import { GroupsProvider } from "library/provider/Groups/GroupsProvider";
+import { GroupProvider } from "library/provider/Groups/GroupProvider";
 
 const AppStores = ({ children }) => {
     return (
         <AuthProvider>
-            <GroupsProvider>{children}</GroupsProvider>
+            <GroupProvider>{children}</GroupProvider>
         </AuthProvider>
     );
 };

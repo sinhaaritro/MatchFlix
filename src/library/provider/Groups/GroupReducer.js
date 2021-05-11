@@ -1,4 +1,4 @@
-import { ACTIONS } from "./GroupsConstant";
+import { ACTIONS } from "./GroupConstant";
 
 const reducer = (state, action) => {
     switch (action.type) {
