@@ -22,6 +22,9 @@ const getDataOfDocument = async ({ collectionName, documentID }) => {
     return getDoc.data();
 };
 
+const deleteDocumentWithDocumentID = async ({ collectionName, documentID }) =>
+    firebase.firestore().collection(collectionName).doc(documentID).delete();
+
 const createUserData = async ({ id, data }) =>
     await createDataWithDocumentID({
         collectionName: "users",
@@ -64,12 +67,18 @@ const getGroupData = async ({ documentID }) =>
         documentID: documentID,
     });
 
-// const updateGroupData = async ({ id }) =>
-//     await updateDataWithDocumentID({
-//         collectionName: "groups",
-//         documentID: id,
-//         data: data,
-//     });
+const updateGroupData = async ({ documentID, data }) =>
+    await updateDataWithDocumentID({
+        collectionName: "groups",
+        documentID: documentID,
+        data: data,
+    });
+
+const deleteGroupData = async ({ documentID }) =>
+    await deleteDocumentWithDocumentID({
+        collectionName: "groups",
+        documentID: documentID,
+    });
 
 export {
     createDataWithoutDocumentID,
@@ -82,4 +91,6 @@ export {
     createGroupData,
     joinGroupData,
     getGroupData,
+    updateGroupData,
+    deleteGroupData,
 };
