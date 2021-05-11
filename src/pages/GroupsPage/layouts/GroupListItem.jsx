@@ -3,11 +3,17 @@ import PropTypes from "prop-types";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { NavLink } from "react-router-dom";
 
 const GroupListItem = ({ item }) => {
     return (
         <>
-            <ListItem button onClick={() => {}}>
+            <ListItem
+                component={NavLink}
+                to={`/group/${item.groupID}`}
+                push
+                button
+            >
                 <ListItemText
                     primary={item.groupName}
                     secondary={"Group ID: " + item.groupID}
