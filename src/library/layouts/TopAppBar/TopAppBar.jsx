@@ -5,7 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-function TopAppBar({ appBarText, appBarExtraIcon }) {
+function TopAppBar({ appBarText, appBarExtraIcon, children }) {
     return (
         <>
             <AppBar color="inherit">
@@ -17,8 +17,10 @@ function TopAppBar({ appBarText, appBarExtraIcon }) {
                         {appBarExtraIcon}
                     </Grid>
                 </Toolbar>
+                {children}
             </AppBar>
             <Toolbar />
+            {children && <Toolbar />}
         </>
     );
 }
@@ -26,6 +28,7 @@ function TopAppBar({ appBarText, appBarExtraIcon }) {
 TopAppBar.propTypes = {
     appBarText: PropTypes.string,
     appBarExtraIcon: PropTypes.node,
+    children: PropTypes.node,
 };
 
 export default TopAppBar;
