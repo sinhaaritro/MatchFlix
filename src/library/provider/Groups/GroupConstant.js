@@ -9,8 +9,20 @@ export const Initial_State = {
     isLoading: false,
     isError: false,
     selectedGroupID: "",
-    selectedGroupName: "",
-    selectedGroupUserList: [],
-    selectedGroupAllCards: [],
-    selectedGroupSelectedCards: [],
+    name: "",
+    region: "",
+    genres: "",
+    contentType: "",
+    providerList: [],
+    userList: [],
+    allCards: [],
+    selectedCards: [],
 };
+
+// data = {
+// groupName: newGroupName,
+// selectedGroupRegion: groupState.selectedGroupRegion,
+// allCard: groupState.selectedGroupAllCards,
+// selectedCard: groupState.selectedGroupSelectedCards,
+// userSelectedCard: groupState.selectedGroupUserList,
+// };

@@ -14,10 +14,14 @@ const reducer = (state, action) => {
                 isError: false,
                 isLoading: false,
                 selectedGroupID: "",
-                selectedGroupName: "",
-                selectedGroupUserList: [],
-                selectedGroupAllCards: [],
-                selectedGroupSelectedCards: [],
+                name: "",
+                region: "",
+                genres: "",
+                contentType: "",
+                providerList: [],
+                userList: [],
+                allCards: [],
+                userData: [],
             };
         }
         case ACTIONS.SELECTED_GROUP: {
@@ -26,11 +30,14 @@ const reducer = (state, action) => {
                 isError: false,
                 isLoading: false,
                 selectedGroupID: action.payload.selectedGroupID,
-                selectedGroupName: action.payload.selectedGroupName,
-                selectedGroupUserList: action.payload.selectedGroupUserList,
-                selectedGroupAllCards: action.payload.selectedGroupAllCards,
-                selectedGroupSelectedCards:
-                    action.payload.selectedGroupSelectedCards,
+                name: action.payload.name,
+                region: action.payload.region,
+                genres: action.payload.genres,
+                contentType: action.payload.contentType,
+                providerList: action.payload.providerList,
+                userList: action.payload.userList,
+                allCards: action.payload.allCards,
+                selectedCards: action.payload.selectedCards,
             };
         }
         default:

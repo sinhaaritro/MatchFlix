@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 // import PropTypes from "prop-types";
-import {
-    // Route,
-    // Redirect,
-    // Link,
-    useParams,
-    useHistory,
-} from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import List from "@material-ui/core/List";
@@ -36,7 +30,7 @@ const MoreOptions = (props) => {
     const textChange = (e) => setInputText(e.target.value);
     const renameGroup = async () => {
         openRenameDialogOpen();
-        renameGroupName({ groupId: id, newGroupName: inputText });
+        renameGroupName({ newGroupName: inputText });
         closeRenameDialogOpen();
     };
 
@@ -44,15 +38,17 @@ const MoreOptions = (props) => {
     const openInviteLinkDialog = () => setIsInviteLinkDialogOpen(true);
     const closeInviteLinkDialog = () => setIsInviteLinkDialogOpen(false);
 
-    const { authState, removeGroup } = useAuthContext();
+    const { removeGroup } = useAuthContext();
 
     const history = useHistory();
+
+    const openGroupConfigurationPage = () => {
+        history.push(`/group-configuration/${id}`);
+    };
+
     const leaveGroup = () => {
         removeGroup({ groupCode: id });
-        removeUserFromGroupData({
-            groupId: id,
-            userID: authState.currentUser.uid,
-        });
+        removeUserFromGroupData();
         history.goBack();
     };
 
@@ -85,7 +81,7 @@ const MoreOptions = (props) => {
                     <ListItem button onClick={openInviteLinkDialog}>
                         <ListItemText primary="Invite Link" />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={openGroupConfigurationPage}>
                         <ListItemText primary="Group Settings" />
                     </ListItem>
                     <ListItem button onClick={leaveGroup}>

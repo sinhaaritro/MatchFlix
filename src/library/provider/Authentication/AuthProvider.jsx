@@ -5,7 +5,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signUserOut,
-} from "library/api/firebaseAuth";
+} from "library/utilities/firebaseAuth";
 import {
     getUserData,
     createUserData,
@@ -13,7 +13,7 @@ import {
     createGroupData,
     joinGroupData,
     getGroupData,
-} from "library/api/firebaseFirestore";
+} from "library/utilities/firebaseFirestore";
 import reducer from "./AuthReducer";
 import * as AuthConstants from "./AuthConstants";
 
@@ -129,10 +129,8 @@ const AuthProvider = ({ children }) => {
         try {
             const groupID = await createGroupData({
                 data: {
-                    groupName: groupName,
-                    allCard: [],
-                    selectedCard: [],
-                    userSelectedCard: [
+                    name: groupName,
+                    userList: [
                         {
                             selectedCard: [],
                             userID: authState.currentUser.uid,
@@ -167,7 +165,6 @@ const AuthProvider = ({ children }) => {
             await joinGroupData({
                 documentID: groupCode,
                 data: {
-                    selectedCard: [],
                     userID: authState.currentUser.uid,
                     userName: authState.userProfile.username,
                 },
@@ -179,7 +176,7 @@ const AuthProvider = ({ children }) => {
                 userProfile: {
                     groupList: [
                         ...authState.userProfile.groupList,
-                        { groupID: groupCode, groupName: groupData.groupName },
+                        { groupID: groupCode, groupName: groupData.name },
                     ],
                     username: authState.userProfile.username,
                 },

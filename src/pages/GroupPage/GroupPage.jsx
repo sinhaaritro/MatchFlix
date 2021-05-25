@@ -17,7 +17,7 @@ function GroupPage(props) {
 
     return (
         <>
-            <TopAppBarWithTabs groupName={groupState.selectedGroupName} />
+            <TopAppBarWithTabs groupName={groupState.name} />
             <Button fullWidth color="primary">
                 Start Swiping
             </Button>

@@ -7,13 +7,18 @@ import MoviesPage from "pages/MoviesPage/MoviesPage";
 import ProfilePage from "pages/ProfilePage/ProfilePage";
 import LogInSignUp from "pages/LogInSignUpPage/LogInSignUp";
 import GroupPage from "pages/GroupPage/GroupPage";
+import GroupConfigurationPage from "pages/GroupConfigurationPage/GroupConfigurationPage";
 
 const AppRouter = (props) => {
     return (
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={GroupsPage} />
-                <Route exact path="/group/:id" component={GroupPage} />
+                <Route path="/group/:id" component={GroupPage} />
+                <Route
+                    path="/group-configuration/:id"
+                    component={GroupConfigurationPage}
+                />
                 <Route path="/login" component={LogInSignUp} />
                 <Route path="/movies" component={MoviesPage} />
                 <Route path="/movie/:id" component={MovieDetailsPage} />

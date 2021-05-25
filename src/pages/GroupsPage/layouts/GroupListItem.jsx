@@ -11,7 +11,7 @@ const GroupListItem = ({ item }) => {
             <ListItem
                 component={NavLink}
                 to={`/group/${item.groupID}`}
-                push
+                push="true"
                 button
             >
                 <ListItemText

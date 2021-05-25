@@ -10,9 +10,9 @@ const MemberTab = (props) => {
 
     return (
         <>
-            {groupState.selectedGroupUserList.length ? (
+            {groupState.userList.length ? (
                 <List>
-                    {groupState.selectedGroupUserList.map((item) => (
+                    {groupState.userList.map((item) => (
                         <ListItem button key={item.userID}>
                             <ListItemText primary={item.userName} />
                         </ListItem>

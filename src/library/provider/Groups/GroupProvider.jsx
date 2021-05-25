@@ -2,17 +2,18 @@ import React, { useEffect, useContext, useReducer, useCallback } from "react";
 import PropTypes from "prop-types";
 import reducer from "./GroupReducer";
 import * as GroupConstants from "./GroupConstant";
-// import { useAuthContext } from "library/provider/Authentication/AuthProvider";
+import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 import {
     getGroupData,
-    updateGroupData,
+    removeGroupData,
+    updateFirestoreGroupData,
     deleteGroupData,
-} from "library/api/firebaseFirestore";
+} from "library/utilities/firebaseFirestore";
 
 const GroupContext = React.createContext(null);
 
 const GroupProvider = ({ children }) => {
-    // const { authState } = useAuthContext();
+    const { authState } = useAuthContext();
     const [groupState, groupDispatch] = useReducer(
         reducer,
         GroupConstants.Initial_State
@@ -37,63 +38,62 @@ const GroupProvider = ({ children }) => {
             const groupDetails = await getGroupData({
                 documentID: groupId,
             });
+
             groupDispatch({
                 type: GroupConstants.ACTIONS.SELECTED_GROUP,
-                payload: {
-                    selectedGroupID: groupId,
-                    selectedGroupName: groupDetails.groupName,
-                    selectedGroupUserList: groupDetails.userSelectedCard,
-                    selectedGroupAllCards: groupDetails.allCard,
-                    selectedGroupSelectedCards: groupDetails.selectedCard,
-                },
+                payload: { selectedGroupID: groupId, ...groupDetails },
             });
         } catch (error) {
             setError(error);
         }
     }, []);
 
-    const removeUserFromGroupData = async ({ groupId, userID }) => {
+    const removeUserFromGroupData = async () => {
         setLoading();
         try {
-            const userSelectedCard = groupState.selectedGroupUserList.filter(
-                (user) => user.userID !== userID
+            const userList = groupState.userList.filter(
+                (user) => user.userID !== authState.currentUser.uid
             );
-            if (userSelectedCard.length === 0)
-                return deleteGroupData({ documentID: groupId });
+            if (userList.length === 0)
+                return deleteGroupData({
+                    documentID: groupState.selectedGroupID,
+                });
 
-            const data = {
-                groupName: groupState.selectedGroupName,
-                allCard: groupState.selectedGroupAllCards,
-                selectedCard: groupState.selectedGroupSelectedCards,
-                userSelectedCard,
-            };
-
-            await updateGroupData({ documentID: groupId, data: data });
+            await removeGroupData({
+                documentID: groupState.selectedGroupID,
+                data: {
+                    userID: authState.currentUser.uid,
+                    userName: authState.userProfile.username,
+                },
+            });
             selectNoGroup();
         } catch (error) {
             setError(error);
         }
     };
 
-    const renameGroupName = async ({ groupId, newGroupName }) => {
+    const renameGroupName = async ({ newGroupName }) =>
+        // Rename group from group document
+        // Rename group in each user
+        await updateGroupData({
+            dataName: "name",
+            newDataValue: newGroupName,
+        });
+
+    const updateGroupData = async ({ dataName, newDataValue }) => {
         setLoading();
         try {
-            const data = {
-                groupName: newGroupName,
-                allCard: groupState.selectedGroupAllCards,
-                selectedCard: groupState.selectedGroupSelectedCards,
-                userSelectedCard: groupState.selectedGroupUserList,
-            };
-            await updateGroupData({ documentID: groupId, data: data });
+            const data = { [dataName]: newDataValue };
+            await updateFirestoreGroupData({
+                documentID: groupState.selectedGroupID,
+                data: data,
+            });
             groupDispatch({
                 type: GroupConstants.ACTIONS.SELECTED_GROUP,
-                payload: {
-                    ...groupState,
-                    selectedGroupName: newGroupName,
-                },
+                payload: { ...groupState, ...data },
             });
         } catch (error) {
-            setError();
+            setError(error);
         }
     };
 
@@ -105,6 +105,7 @@ const GroupProvider = ({ children }) => {
                 selectNoGroup,
                 removeUserFromGroupData,
                 renameGroupName,
+                updateGroupData,
             }}
         >
             {children}
