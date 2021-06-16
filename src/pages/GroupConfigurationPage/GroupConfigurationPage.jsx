@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import PropTypes from "prop-types";
 import Divider from "@material-ui/core/Divider";
 import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
@@ -103,7 +102,5 @@ const GroupConfigurationPage = (props) => {
         </>
     );
 };
-
-GroupConfigurationPage.propTypes = {};
 
 export default GroupConfigurationPage;

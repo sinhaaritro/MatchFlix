@@ -1,23 +1,44 @@
-import React, { useEffect, useContext, useReducer, useCallback } from "react";
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    useReducer,
+    useCallback,
+} from "react";
 import PropTypes from "prop-types";
 import reducer from "./GroupReducer";
 import * as GroupConstants from "./GroupConstant";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 import {
-    getGroupData,
     removeGroupData,
     updateFirestoreGroupData,
     deleteGroupData,
 } from "library/utilities/firebaseFirestore";
+import firebase from "library/api/firebaseConfig";
 
 const GroupContext = React.createContext(null);
 
 const GroupProvider = ({ children }) => {
     const { authState } = useAuthContext();
+    const [groupID, setGroupID] = useState();
     const [groupState, groupDispatch] = useReducer(
         reducer,
         GroupConstants.Initial_State
     );
+
+    const watchGroups = useCallback(() => {
+        firebase
+            .firestore()
+            .collection("groups")
+            .doc(groupID)
+            .onSnapshot((doc) => {
+                const groupDetails = doc.data();
+                groupDispatch({
+                    type: GroupConstants.ACTIONS.SELECTED_GROUP,
+                    payload: { ...groupDetails },
+                });
+            });
+    }, [groupID]);
 
     const selectNoGroup = () => {
         groupDispatch({ type: GroupConstants.ACTIONS.NO_GROUP_SELECTED });
@@ -32,21 +53,8 @@ const GroupProvider = ({ children }) => {
         groupDispatch({ type: GroupConstants.ACTIONS.ERROR });
     };
 
-    const getSelectedGroupDetails = useCallback(async ({ groupId }) => {
-        setLoading();
-        try {
-            const groupDetails = await getGroupData({
-                documentID: groupId,
-            });
-
-            groupDispatch({
-                type: GroupConstants.ACTIONS.SELECTED_GROUP,
-                payload: { selectedGroupID: groupId, ...groupDetails },
-            });
-        } catch (error) {
-            setError(error);
-        }
-    }, []);
+    const setSelectedGroupID = ({ groupId }) => setGroupID(groupId);
+    const getSelectedGroupID = () => groupID;
 
     const removeUserFromGroupData = async () => {
         setLoading();
@@ -55,12 +63,10 @@ const GroupProvider = ({ children }) => {
                 (user) => user.userID !== authState.currentUser.uid
             );
             if (userList.length === 0)
-                return deleteGroupData({
-                    documentID: groupState.selectedGroupID,
-                });
+                return deleteGroupData({ documentID: groupID });
 
             await removeGroupData({
-                documentID: groupState.selectedGroupID,
+                documentID: groupID,
                 data: {
                     userID: authState.currentUser.uid,
                     userName: authState.userProfile.username,
@@ -85,23 +91,28 @@ const GroupProvider = ({ children }) => {
         try {
             const data = { [dataName]: newDataValue };
             await updateFirestoreGroupData({
-                documentID: groupState.selectedGroupID,
+                documentID: groupID,
                 data: data,
-            });
-            groupDispatch({
-                type: GroupConstants.ACTIONS.SELECTED_GROUP,
-                payload: { ...groupState, ...data },
             });
         } catch (error) {
             setError(error);
         }
     };
 
+    useEffect(() => {
+        console.log(groupID);
+        if (!groupID) return;
+
+        const unsbscribe = watchGroups();
+        return () => unsbscribe;
+    }, [watchGroups, groupID]);
+
     return (
         <GroupContext.Provider
             value={{
                 groupState,
-                getSelectedGroupDetails,
+                setSelectedGroupID,
+                getSelectedGroupID,
                 selectNoGroup,
                 removeUserFromGroupData,
                 renameGroupName,

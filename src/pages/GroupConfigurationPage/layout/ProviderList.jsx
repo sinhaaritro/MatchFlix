@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -10,6 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import Switch from "@material-ui/core/Switch";
+import Avatar from "@material-ui/core/Avatar";
 
 const ProviderList = ({
     providerList,
@@ -67,29 +69,34 @@ const ProviderList = ({
                     Provider List
                 </DialogTitle>
                 <DialogContent dividers>
-                    {providerList.map((provider) => {
-                        return (
-                            <ListItem key={provider.provider_id}>
-                                <ListItemText
-                                    primary={provider.provider_name}
-                                />
-                                <ListItemSecondaryAction>
-                                    <Switch
-                                        name={provider.provider_name}
-                                        edge="end"
-                                        onChange={() =>
-                                            handleProviderToggle(
-                                                provider.provider_name
-                                            )
-                                        }
-                                        checked={selectedProviderListTemp.includes(
-                                            provider.provider_name
-                                        )}
+                    <List>
+                        {providerList.map((provider) => {
+                            return (
+                                <ListItem key={provider.provider_id}>
+                                    <ListItemAvatar>
+                                        <Avatar />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={provider.provider_name}
                                     />
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        );
-                    })}
+                                    <ListItemSecondaryAction>
+                                        <Switch
+                                            name={provider.provider_name}
+                                            edge="end"
+                                            onChange={() =>
+                                                handleProviderToggle(
+                                                    provider.provider_name
+                                                )
+                                            }
+                                            checked={selectedProviderListTemp.includes(
+                                                provider.provider_name
+                                            )}
+                                        />
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            );
+                        })}
+                    </List>
                 </DialogContent>
                 <DialogActions>
                     <Button
