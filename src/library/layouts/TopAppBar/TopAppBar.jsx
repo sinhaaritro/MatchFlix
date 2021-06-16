@@ -2,14 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 
 function TopAppBar({ appBarText, appBarExtraIcon, children }) {
     return (
         <>
             <AppBar color="inherit">
                 <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <ArrowBackRoundedIcon />
+                    </IconButton>
                     <Grid container justify="space-between" alignItems="center">
                         <Typography variant="h6" color="textPrimary">
                             {appBarText}
