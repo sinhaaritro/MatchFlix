@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import useFetch from "library/hooks/useFetch";
@@ -17,32 +18,15 @@ const GroupConfigurationPage = (props) => {
     if (fetchedRegionList.length)
         regionList = [...regionList, ...fetchedRegionList];
     const [selectedRegion, setSelectedRegion] = useState(groupState.region);
-    const handleRegionChange = (event) => {
-        setSelectedRegion(event.target.value);
-        updateGroupData({
-            dataName: "region",
-            newDataValue: event.target.value,
-        });
-    };
+    const handleRegionChange = (event) => setSelectedRegion(event.target.value);
 
     const { data: genresList } = useFetch(`/api/tmdbGenres`);
     const [selectedGenres, setSelectedGenres] = useState(groupState.genres);
-    const handleGenresChange = (event) => {
-        setSelectedGenres(event.target.value);
-        updateGroupData({
-            dataName: "genres",
-            newDataValue: event.target.value,
-        });
-    };
+    const handleGenresChange = (event) => setSelectedGenres(event.target.value);
 
     const [contentType, setContentType] = useState(groupState.contentType);
-    const handleContentTypeChange = (event) => {
+    const handleContentTypeChange = (event) =>
         setContentType(event.target.value);
-        updateGroupData({
-            dataName: "contentType",
-            newDataValue: event.target.value,
-        });
-    };
 
     let { data: providerList } = useFetch(
         `/api/tmdbWatchProvidersByRegion?watch_region=${groupState.region}`
@@ -63,12 +47,28 @@ const GroupConfigurationPage = (props) => {
     const [selectedProviderList, setSelectedProviderList] = useState(
         groupState.providerList
     );
-    const handleProviderListChange = (newList) => {
+    const handleProviderListChange = (newList) =>
         setSelectedProviderList(newList);
-        updateGroupData({ dataName: "providerList", newDataValue: newList });
+
+    const saveGroupData = () => {
+        updateGroupData({
+            dataName: "region",
+            newDataValue: selectedRegion,
+        });
+        updateGroupData({
+            dataName: "genres",
+            newDataValue: selectedGenres,
+        });
+        updateGroupData({
+            dataName: "contentType",
+            newDataValue: contentType,
+        });
+        updateGroupData({
+            dataName: "providerList",
+            newDataValue: selectedProviderList,
+        });
     };
 
-    console.log("groupState", groupState);
     return (
         <>
             <TopAppBar appBarText="Group Configuration" />
@@ -98,6 +98,14 @@ const GroupConfigurationPage = (props) => {
             ) : (
                 "loading"
             )}
+
+            {(groupState.region !== selectedRegion ||
+                groupState.genres !== selectedGenres) && (
+                <Button variant="contained" onClick={saveGroupData}>
+                    Save
+                </Button>
+            )}
+
             <BottomNavigationBar />
         </>
     );
