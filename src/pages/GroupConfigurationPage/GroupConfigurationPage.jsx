@@ -98,9 +98,11 @@ const GroupConfigurationPage = (props) => {
             ) : (
                 "loading"
             )}
-
+            <br />
             {(groupState.region !== selectedRegion ||
-                groupState.genres !== selectedGenres) && (
+                groupState.genres !== selectedGenres ||
+                groupState.contentType !== contentType ||
+                groupState.providerList !== selectedProviderList) && (
                 <Button color="primary" onClick={saveGroupData}>
                     Save
                 </Button>
