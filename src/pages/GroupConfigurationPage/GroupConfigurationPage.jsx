@@ -101,7 +101,7 @@ const GroupConfigurationPage = (props) => {
 
             {(groupState.region !== selectedRegion ||
                 groupState.genres !== selectedGenres) && (
-                <Button variant="contained" onClick={saveGroupData}>
+                <Button color="primary" onClick={saveGroupData}>
                     Save
                 </Button>
             )}
