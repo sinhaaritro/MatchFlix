@@ -1,32 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
-import useFetch from "library/hooks/useFetch";
-import * as Constants from "library/constants/constants";
+// import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { useGroupContext } from "library/provider/Groups/GroupProvider";
+// import Typography from "@material-ui/core/Typography";
 import MovieCard from "./MovieCard";
 
 const AllMovieList = ({ genreID }) => {
-    const { status, data: movieList } = useFetch(
-        `/api/tmdbMoviesByGenres?with_genres=${genreID}`
-    );
-
+    const { groupState } = useGroupContext();
     return (
         <>
-            {status === Constants.apiStatus.LOADING && (
-                <Typography variant="caption" color="textSecondary">
-                    Loading...
-                </Typography>
-            )}
-            {status === Constants.apiStatus.ERROR && (
-                <Typography variant="caption" color="textSecondary">
-                    Error...
-                </Typography>
-            )}
-            {status === Constants.apiStatus.SUCCESS && movieList.results && (
+            {groupState.allCards && (
                 <Grid container spacing={2}>
-                    {movieList.results.map((listItem) => {
-                        return <MovieCard key={listItem.id} item={listItem} />;
+                    {groupState.allCards.map((movieID) => {
+                        return <MovieCard key={movieID} item={movieID} />;
                     })}
                 </Grid>
             )}
