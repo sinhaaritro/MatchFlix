@@ -7,7 +7,7 @@ import * as Constants from "library/constants/constants";
 import useFetch from "library/hooks/useFetch";
 
 const MovieList = ({ item }) => {
-    const { status, data: movieDetails } = useFetch(
+    const { data: movieDetails } = useFetch(
         `/api/tmdbMoviesDetails?movieId=${item}`
     );
 
