@@ -11,7 +11,7 @@ import ContentType from "./layout/ContentType";
 import ProviderList from "./layout/ProviderList";
 
 const GroupConfigurationPage = (props) => {
-    const { groupState, updateGroupData } = useGroupContext();
+    const { groupState, updateGroupData, addCards } = useGroupContext();
 
     let regionList = [{ iso_3166_1: "ALL", english_name: "ALL" }];
     const { data: fetchedRegionList } = useFetch(`/api/tmdbConfigCountries`);
@@ -67,6 +67,7 @@ const GroupConfigurationPage = (props) => {
             dataName: "providerList",
             newDataValue: selectedProviderList,
         });
+        addCards();
     };
 
     return (
