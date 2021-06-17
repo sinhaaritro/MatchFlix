@@ -25,7 +25,7 @@ const MovieList = ({ item }) => {
                             {item.original_title}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
-                            {item.release_date.substring(0, 4)}
+                            {item?.release_date?.substring(0, 4)}
                         </Typography>
                     </Grid>
                 </Grid>
