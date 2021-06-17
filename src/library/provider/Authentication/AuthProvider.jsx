@@ -127,9 +127,17 @@ const AuthProvider = ({ children }) => {
     const createGroup = async ({ groupName }) => {
         setLoading();
         try {
+            const response = await fetch(`/api/tmdbMoviesByGenres?with_genres`);
+            if (!response.ok) {
+                // make the promise be rejected if we didn't get a 2xx response
+                throw new Error("Not 2xx response");
+            }
+            const movieList = await response.json();
+            let ml = movieList.results.map((movie) => movie.id);
             const groupID = await createGroupData({
                 data: {
                     name: groupName,
+                    allCards: ml,
                     userList: [
                         {
                             selectedCard: [],
