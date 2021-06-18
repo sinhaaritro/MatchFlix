@@ -18,7 +18,11 @@ const TopAppBarWithTabs = ({ groupName }) => {
 
     return (
         <>
-            <TopAppBar appBarText={groupName} appBarExtraIcon={<MoreOptions />}>
+            <TopAppBar
+                appBarText={groupName}
+                appBarExtraIcon={<MoreOptions />}
+                showTopBar="true"
+            >
                 <Paper>
                     <Tabs
                         variant="fullWidth"
