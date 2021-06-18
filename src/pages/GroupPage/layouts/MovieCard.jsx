@@ -4,33 +4,28 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { NavLink } from "react-router-dom";
 import * as Constants from "library/constants/constants";
-import useFetch from "library/hooks/useFetch";
 
 const MovieList = ({ item }) => {
-    const { data: movieDetails } = useFetch(
-        `/api/tmdbMoviesDetails?movieId=${item}`
-    );
-
     return (
         <Grid item xs={4}>
             <NavLink
-                to={`/movie/${movieDetails.id}`}
+                to={`/movie/${item.id}`}
                 style={{ textDecoration: "none" }}
             >
                 <Grid container>
                     <Grid item>
                         <img
                             alt="movie poster"
-                            src={`${Constants.baseTMDbImageUrl}w500${movieDetails.poster_path}`}
+                            src={`${Constants.baseTMDbImageUrl}w500${item.poster_path}`}
                             style={{ width: "100%" }}
                         />
                     </Grid>
                     <Grid item>
                         <Typography variant="body1" color="textPrimary">
-                            {movieDetails.original_title}
+                            {item.original_title}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
-                            {movieDetails?.release_date?.substring(0, 4)}
+                            {item?.release_date?.substring(0, 4)}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -40,7 +35,7 @@ const MovieList = ({ item }) => {
 };
 
 MovieList.propTypes = {
-    item: PropTypes.number,
+    item: PropTypes.object,
 };
 
 export default MovieList;

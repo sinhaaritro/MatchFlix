@@ -1,37 +1,39 @@
 import React from "react";
-// import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import { useGroupContext } from "library/provider/Groups/GroupProvider";
-// import Typography from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 import MovieCard from "./MovieCard";
+import useFetch from "library/hooks/useFetch";
+import * as Constants from "library/constants/constants";
 
-const AllMovieList = ({ genreID }) => {
+const AllMovieList = () => {
     const { groupState } = useGroupContext();
+    const { status, data: movieData } = useFetch(
+        `/api/tmdbMoviesByIDs`,
+        groupState.allCards
+    );
+
     return (
         <>
-            {groupState.allCards && (
+            {status === Constants.apiStatus.LOADING && (
+                <Typography variant="caption" color="textSecondary">
+                    Loading...
+                </Typography>
+            )}
+            {status === Constants.apiStatus.ERROR && (
+                <Typography variant="caption" color="textSecondary">
+                    Error...
+                </Typography>
+            )}
+            {status === Constants.apiStatus.SUCCESS && (
                 <Grid container spacing={2}>
-                    {groupState.allCards.map((movieID) => {
-                        return <MovieCard key={movieID} item={movieID} />;
+                    {movieData?.map((movie) => {
+                        return <MovieCard key={movie.id || -1} item={movie} />;
                     })}
                 </Grid>
             )}
         </>
     );
 };
-
-// AllMovieList.propTypes = {
-//     genreID: PropTypes.number,
-// };
-
-// AllMovieList.defaultProps = {
-//     query: "null",
-//     language: "null",
-//     region: "null",
-//     page: "1",
-//     year: "null",
-//     primary_release_year: "null",
-//     include_adult: "null",
-// };
 
 export default AllMovieList;

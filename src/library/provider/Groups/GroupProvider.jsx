@@ -99,6 +99,13 @@ const GroupProvider = ({ children }) => {
         }
     };
 
+    // const addCards = async () => {
+    //     await updateGroupData({
+    //         dataName: "allCards",
+    //         newDataValue: newMovieList.results,
+    //     });
+    // };
+
     useEffect(() => {
         console.log(groupID);
         if (!groupID) return;
@@ -117,6 +124,7 @@ const GroupProvider = ({ children }) => {
                 removeUserFromGroupData,
                 renameGroupName,
                 updateGroupData,
+                // addCards,
             }}
         >
             {children}
