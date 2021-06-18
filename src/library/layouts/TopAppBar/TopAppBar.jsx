@@ -6,15 +6,30 @@ import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
+import { useHistory } from "react-router-dom";
 
-function TopAppBar({ appBarText, appBarExtraIcon, children }) {
+function TopAppBar({
+    appBarText,
+    appBarExtraIcon,
+    showTopBar = false,
+    children,
+}) {
+    const history = useHistory();
+
     return (
         <>
             <AppBar color="inherit">
                 <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <ArrowBackRoundedIcon />
-                    </IconButton>
+                    {showTopBar && (
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            onClick={() => history.goBack()}
+                        >
+                            <ArrowBackRoundedIcon />
+                        </IconButton>
+                    )}
                     <Grid container justify="space-between" alignItems="center">
                         <Typography variant="h6" color="textPrimary">
                             {appBarText}
