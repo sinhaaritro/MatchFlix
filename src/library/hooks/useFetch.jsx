@@ -1,14 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
 import * as Constants from "library/constants/constants";
 
-const useFetch = (url) => {
+const useFetch = (url, body) => {
     const [data, setData] = useState({});
     const [status, setStatus] = useState(Constants.apiStatus.LOADING);
 
     const fetchData = useCallback(async () => {
         setStatus(Constants.apiStatus.LOADING);
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                method: "PUT",
+                body: body,
+                headers: { "Content-Type": "application/json" },
+            });
             if (!response.ok) {
                 // make the promise be rejected if we didn't get a 2xx response
                 throw new Error("Not 2xx response");
@@ -20,7 +24,7 @@ const useFetch = (url) => {
             console.error(e);
             setStatus(Constants.apiStatus.ERROR);
         }
-    }, [url]);
+    }, [url, body]);
 
     useEffect(() => {
         if (!url) return;
