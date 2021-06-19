@@ -1,16 +1,17 @@
 require("dotenv").config();
+const { queryParameterCreator } = require("./utils/queryPrameterCreator.js");
 const fetch = require("node-fetch").default;
 
 const handler = async (event) => {
     try {
-        const { watch_region } = event.queryStringParameters;
+        const queryString = queryParameterCreator(event.queryStringParameters);
 
         const movieResponse = await fetch(
-            `https://api.themoviedb.org/3/watch/providers/movie?api_key=${process.env.TMDB_API}&watch_region=${watch_region}`
+            `https://api.themoviedb.org/3/watch/providers/movie?api_key=${process.env.TMDB_API}${queryString}`
         );
         const movieData = await movieResponse.json();
         const tvResponse = await fetch(
-            `https://api.themoviedb.org/3/watch/providers/tv?api_key=${process.env.TMDB_API}&watch_region=${watch_region}`
+            `https://api.themoviedb.org/3/watch/providers/tv?api_key=${process.env.TMDB_API}${queryString}`
         );
         const tvData = await tvResponse.json();
 
