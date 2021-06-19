@@ -3,11 +3,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "library/hooks/useFetch";
 import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
-import IconButton from "@material-ui/core/IconButton";
+import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import MovieMainDetails from "./layouts/MovieMainDetails";
 import MovieExtraDetails from "./layouts/MovieExtraDetails";
@@ -23,14 +20,7 @@ const MovieDetailsPage = (props) => {
 
     return (
         <>
-            <AppBar color="inherit">
-                <Toolbar>
-                    <IconButton aria-label="search">
-                        <ArrowBackRoundedIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Toolbar />
+            <TopAppBar showTopBar={true} />
             {status === Constants.apiStatus.LOADING && (
                 <Typography variant="caption" color="textSecondary">
                     Loading...
