@@ -9,7 +9,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "firebase": "^8.5.0",
-    "netlify-cli": "^3.37.26",
+    "netlify-cli": "^3.37.37",
     "node-fetch": "^2.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
