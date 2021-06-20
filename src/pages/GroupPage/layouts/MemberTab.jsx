@@ -10,7 +10,7 @@ const MemberTab = (props) => {
 
     return (
         <>
-            {groupState.userList.length ? (
+            {groupState?.userList.length && (
                 <List>
                     {groupState.userList.map((item) => (
                         <ListItem button key={item.userID}>
@@ -18,8 +18,6 @@ const MemberTab = (props) => {
                         </ListItem>
                     ))}
                 </List>
-            ) : (
-                "No list"
             )}
         </>
     );
