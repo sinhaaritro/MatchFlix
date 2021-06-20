@@ -81,15 +81,11 @@ const GroupProvider = ({ children }) => {
     const renameGroupName = async ({ newGroupName }) =>
         // Rename group from group document
         // Rename group in each user
-        await updateGroupData({
-            dataName: "name",
-            newDataValue: newGroupName,
-        });
+        await updateGroupData({ data: { name: newGroupName } });
 
-    const updateGroupData = async ({ dataName, newDataValue }) => {
+    const updateGroupData = async ({ data }) => {
         setLoading();
         try {
-            const data = { [dataName]: newDataValue };
             await updateFirestoreGroupData({
                 documentID: groupID,
                 data: data,
