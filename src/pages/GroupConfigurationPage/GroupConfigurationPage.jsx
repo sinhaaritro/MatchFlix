@@ -12,7 +12,7 @@ import ContentType from "./layout/ContentType";
 import ProviderList from "./layout/ProviderList";
 
 const GroupConfigurationPage = (props) => {
-    const { groupState, updateGroupData, addCards } = useGroupContext();
+    const { groupState, updateGroupData } = useGroupContext();
 
     const [selectedRegion, setSelectedRegion] = useState(groupState.region);
     const handleRegionChange = (event) => setSelectedRegion(event.target.value);
@@ -46,16 +46,29 @@ const GroupConfigurationPage = (props) => {
     const handleProviderListChange = (newList) =>
         setSelectedProviderList(newList);
 
-    const saveGroupData = () => {
-        updateGroupData({
-            data: {
-                region: selectedRegion,
-                genres: selectedGenres,
-                contentType: contentType,
-                providerList: selectedProviderList,
-            },
-        });
-        // addCards();
+    const saveGroupData = async () => {
+        try {
+            const response = await fetch(
+                `/api/tmdbDiscoverMoviesByFilter?watch_region=${selectedRegion}&with_genres=${selectedGenres}&include_adult=true`
+            );
+            if (!response.ok) {
+                // make the promise be rejected if we didn't get a 2xx response
+                throw new Error("Not 2xx response");
+            }
+            const movieList = await response.json();
+            const ml = movieList.results.map((movie) => movie.id);
+            updateGroupData({
+                data: {
+                    allCards: ml,
+                    region: selectedRegion,
+                    genres: selectedGenres,
+                    contentType: contentType,
+                    providerList: selectedProviderList,
+                },
+            });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
