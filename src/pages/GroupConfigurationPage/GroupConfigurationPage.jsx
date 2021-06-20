@@ -5,6 +5,7 @@ import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
 import BottomNavigationBar from "library/layouts/BottomNavigation/BottomNavigationBar";
 import useFetch from "library/hooks/useFetch";
 import { useGroupContext } from "library/provider/Groups/GroupProvider";
+import * as groupConstants from "library/constants/groupConstants";
 import RegionList from "./layout/RegionList";
 import GenresList from "./layout/GenresList";
 import ContentType from "./layout/ContentType";
@@ -13,14 +14,9 @@ import ProviderList from "./layout/ProviderList";
 const GroupConfigurationPage = (props) => {
     const { groupState, updateGroupData, addCards } = useGroupContext();
 
-    let regionList = [{ iso_3166_1: "ALL", english_name: "ALL" }];
-    const { data: fetchedRegionList } = useFetch(`/api/tmdbConfigCountries`);
-    if (fetchedRegionList.length)
-        regionList = [...regionList, ...fetchedRegionList];
     const [selectedRegion, setSelectedRegion] = useState(groupState.region);
     const handleRegionChange = (event) => setSelectedRegion(event.target.value);
 
-    const { data: genresList } = useFetch(`/api/tmdbGenres`);
     const [selectedGenres, setSelectedGenres] = useState(groupState.genres);
     const handleGenresChange = (event) => setSelectedGenres(event.target.value);
 
@@ -29,7 +25,7 @@ const GroupConfigurationPage = (props) => {
         setContentType(event.target.value);
 
     let { data: providerList } = useFetch(
-        `/api/tmdbWatchProvidersByRegion?watch_region=${groupState.region}`
+        `/api/tmdbWatchProvidersByRegion?watch_region=${selectedRegion}`
     );
     if (providerList && providerList.length) {
         providerList = providerList
@@ -52,22 +48,14 @@ const GroupConfigurationPage = (props) => {
 
     const saveGroupData = () => {
         updateGroupData({
-            dataName: "region",
-            newDataValue: selectedRegion,
+            data: {
+                region: selectedRegion,
+                genres: selectedGenres,
+                contentType: contentType,
+                providerList: selectedProviderList,
+            },
         });
-        updateGroupData({
-            dataName: "genres",
-            newDataValue: selectedGenres,
-        });
-        updateGroupData({
-            dataName: "contentType",
-            newDataValue: contentType,
-        });
-        updateGroupData({
-            dataName: "providerList",
-            newDataValue: selectedProviderList,
-        });
-        addCards();
+        // addCards();
     };
 
     return (
@@ -76,13 +64,13 @@ const GroupConfigurationPage = (props) => {
             <RegionList
                 selectedRegion={selectedRegion}
                 handleChange={handleRegionChange}
-                regionList={regionList}
+                regionList={groupConstants.regionList}
             />
             <Divider />
             <GenresList
                 selectedGenres={selectedGenres}
                 handleChange={handleGenresChange}
-                genresList={genresList.genre}
+                genresList={groupConstants.genresList}
             />
             <Divider />
             <ContentType
