@@ -4,12 +4,21 @@ const fetch = require("node-fetch").default;
 
 const handler = async (event) => {
     try {
-        const queryString = queryParameterCreator(event.queryStringParameters);
+        let queryString = queryParameterCreator(event.queryStringParameters);
 
-        const movieResponse = await fetch(
+        let movieResponse = await fetch(
             `https://api.themoviedb.org/3/watch/providers/movie?api_key=${process.env.TMDB_API}${queryString}`
         );
-        const movieData = await movieResponse.json();
+        let movieData = await movieResponse.json();
+
+        if (movieData.results.length === 0) {
+            queryString = "";
+            movieResponse = await fetch(
+                `https://api.themoviedb.org/3/watch/providers/movie?api_key=${process.env.TMDB_API}${queryString}`
+            );
+            movieData = await movieResponse.json();
+        }
+
         const tvResponse = await fetch(
             `https://api.themoviedb.org/3/watch/providers/tv?api_key=${process.env.TMDB_API}${queryString}`
         );
