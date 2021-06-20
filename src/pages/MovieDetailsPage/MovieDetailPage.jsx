@@ -20,7 +20,7 @@ const MovieDetailsPage = (props) => {
 
     return (
         <>
-            <TopAppBar showTopBar={true} />
+            <TopAppBar showTopRightBackIcon={true} />
             {status === Constants.apiStatus.LOADING && (
                 <Typography variant="caption" color="textSecondary">
                     Loading...

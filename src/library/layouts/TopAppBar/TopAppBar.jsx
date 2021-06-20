@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 function TopAppBar({
     appBarText,
     appBarExtraIcon,
-    showTopBar = false,
+    showTopRightBackIcon = false,
     children,
 }) {
     const history = useHistory();
@@ -20,7 +20,7 @@ function TopAppBar({
         <>
             <AppBar color="inherit">
                 <Toolbar>
-                    {showTopBar && (
+                    {showTopRightBackIcon && (
                         <IconButton
                             edge="start"
                             color="inherit"

@@ -73,7 +73,10 @@ const GroupConfigurationPage = (props) => {
 
     return (
         <>
-            <TopAppBar appBarText="Group Configuration" showTopBar="true" />
+            <TopAppBar
+                appBarText="Group Configuration"
+                showTopRightBackIcon="true"
+            />
             <RegionList
                 selectedRegion={selectedRegion}
                 handleChange={handleRegionChange}

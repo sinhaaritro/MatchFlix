@@ -21,7 +21,7 @@ const TopAppBarWithTabs = ({ groupName }) => {
             <TopAppBar
                 appBarText={groupName}
                 appBarExtraIcon={<MoreOptions />}
-                showTopBar="true"
+                showTopRightBackIcon="true"
             >
                 <Paper>
                     <Tabs
