@@ -127,7 +127,7 @@ const AuthProvider = ({ children }) => {
     const createGroup = async ({ groupName }) => {
         setLoading();
         try {
-            const response = await fetch(`/api/tmdbMoviesByGenres?with_genres`);
+            const response = await fetch(`/api/tmdbDiscoverMoviesByFilter`);
             if (!response.ok) {
                 // make the promise be rejected if we didn't get a 2xx response
                 throw new Error("Not 2xx response");
@@ -136,8 +136,12 @@ const AuthProvider = ({ children }) => {
             let ml = movieList.results.map((movie) => movie.id);
             const groupID = await createGroupData({
                 data: {
-                    name: groupName,
                     allCards: ml,
+                    contentType: "movie",
+                    genres: -1,
+                    name: groupName,
+                    providerList: [],
+                    region: "ALL",
                     userList: [
                         {
                             selectedCard: [],
@@ -173,6 +177,7 @@ const AuthProvider = ({ children }) => {
             await joinGroupData({
                 documentID: groupCode,
                 data: {
+                    selectedCard: [],
                     userID: authState.currentUser.uid,
                     userName: authState.userProfile.username,
                 },
