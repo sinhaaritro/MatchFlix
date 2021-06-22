@@ -22,7 +22,7 @@ const MovieList = ({ item }) => {
                     </Grid>
                     <Grid item>
                         <Typography variant="body1" color="textPrimary">
-                            {item.original_title}
+                            {item.title}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                             {item?.release_date?.substring(0, 4)}
