@@ -10,8 +10,6 @@ import {
     getUserData,
     createUserData,
     updateUserData,
-    createGroupData,
-    addUserToGroupData,
     getGroupData,
 } from "library/utilities/firebaseFirestore";
 import reducer from "./AuthReducer";
@@ -124,48 +122,6 @@ const AuthProvider = ({ children }) => {
 
     // const userNameChange = async () => {};
 
-    const createGroup = async ({ groupName }) => {
-        setLoading();
-        try {
-            const response = await fetch(`/api/tmdbDiscoverMoviesByFilter`);
-            if (!response.ok) {
-                // make the promise be rejected if we didn't get a 2xx response
-                throw new Error("Not 2xx response");
-            }
-            const movieList = await response.json();
-            let ml = movieList.results.map((movie) => movie.id);
-            const groupID = await createGroupData({
-                data: {
-                    allCards: ml,
-                    contentType: "movie",
-                    genres: -1,
-                    name: groupName,
-                    providerList: [],
-                    region: "ALL",
-                    userList: [
-                        {
-                            selectedCard: [],
-                            userID: authState.currentUser.uid,
-                            userName: authState.userProfile.username,
-                        },
-                    ],
-                },
-            });
-            await setUpdateProfile({
-                userProfile: {
-                    groupList: [
-                        ...authState.userProfile.groupList,
-                        { groupID: groupID.id, groupName: groupName },
-                    ],
-                    username: authState.userProfile.username,
-                },
-            });
-            return groupID.id;
-        } catch (error) {
-            setError(error);
-        }
-    };
-
     const joinGroup = async ({ groupCode }) => {
         setLoading();
         try {
@@ -173,15 +129,6 @@ const AuthProvider = ({ children }) => {
                 (group) => group.groupID === groupCode
             );
             if (filteredList.length !== 0) throw new Error("Already in group");
-
-            await addUserToGroupData({
-                documentID: groupCode,
-                data: {
-                    selectedCard: [],
-                    userID: authState.currentUser.uid,
-                    userName: authState.userProfile.username,
-                },
-            });
 
             const groupData = await getGroupData({ documentID: groupCode });
 
@@ -254,7 +201,6 @@ const AuthProvider = ({ children }) => {
                 logIn,
                 signUp,
                 signOut,
-                createGroup,
                 joinGroup,
                 removeGroup,
                 setUpdateProfile,

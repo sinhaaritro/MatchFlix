@@ -9,13 +9,13 @@ export const Initial_State = {
     isLoading: false,
     isError: false,
     selectedGroupID: "",
+    allCards: [],
     name: "",
     region: "",
     genres: "",
     contentType: "",
     providerList: [],
-    userList: [],
-    allCards: [],
+    userList: {},
     selectedCards: [],
 };
 

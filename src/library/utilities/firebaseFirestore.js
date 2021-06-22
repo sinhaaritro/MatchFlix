@@ -67,17 +67,15 @@ export const addUserToGroupData = async ({ documentID, data }) =>
     await updateDataWithDocumentID({
         collectionName: "groups",
         documentID: documentID,
-        data: {
-            userList: firebase.firestore.FieldValue.arrayUnion(data),
-        },
+        data: data,
     });
 
-export const removeUserToGroupData = async ({ documentID, data }) =>
+export const removeUserToGroupData = async ({ documentID, userID }) =>
     await updateDataWithDocumentID({
         collectionName: "groups",
         documentID: documentID,
         data: {
-            userList: firebase.firestore.FieldValue.arrayRemove(data),
+            [`userList.${userID}`]: firebase.firestore.FieldValue.delete(),
         },
     });
 

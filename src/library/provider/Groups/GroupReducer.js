@@ -18,7 +18,7 @@ const reducer = (state, action) => {
                 genres: "",
                 contentType: "",
                 providerList: [],
-                userList: [],
+                userList: {},
                 allCards: [],
                 userData: [],
             };

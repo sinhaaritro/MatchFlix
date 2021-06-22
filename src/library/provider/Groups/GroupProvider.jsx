@@ -10,6 +10,7 @@ import reducer from "./GroupReducer";
 import * as GroupConstants from "./GroupConstant";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 import {
+    createGroupData,
     addUserToGroupData,
     removeUserToGroupData,
     updateFirestoreGroupData,
@@ -57,24 +58,66 @@ const GroupProvider = ({ children }) => {
     const setSelectedGroupID = ({ groupId }) => setGroupID(groupId);
     const getSelectedGroupID = () => groupID;
 
+    const createGroup = async ({ groupName }) => {
+        setLoading();
+        try {
+            const response = await fetch(`/api/tmdbDiscoverMoviesByFilter`);
+            if (!response.ok) {
+                // make the promise be rejected if we didn't get a 2xx response
+                throw new Error("Not 2xx response");
+            }
+            const movieList = await response.json();
+            let ml = movieList.results.map((movie) => movie.id);
+            const groupID = await createGroupData({
+                data: {
+                    allCards: ml,
+                    contentType: "movie",
+                    genres: -1,
+                    name: groupName,
+                    providerList: [],
+                    region: "ALL",
+                    userList: {
+                        [authState.currentUser.uid]: {
+                            selectedCard: [],
+                            userName: authState.userProfile.username,
+                        },
+                    },
+                },
+            });
+            return groupID.id;
+        } catch (error) {
+            setError(error);
+        }
+    };
+
+    const addUserToGroup = async ({ groupCode }) => {
+        setLoading();
+        try {
+            //TODO: Conditional checking
+            const updateProperty = `userList.${authState.currentUser.uid}`;
+            await addUserToGroupData({
+                documentID: groupCode,
+                data: {
+                    [updateProperty]: {
+                        selectedCard: [],
+                        userName: authState.userProfile.username,
+                    },
+                },
+            });
+        } catch (error) {
+            setError(error);
+        }
+    };
+
     const removeUserFromGroupData = async () => {
         setLoading();
         try {
-            const userList = groupState.userList.filter(
-                (user) => user.userID !== authState.currentUser.uid
-            );
-            if (userList.length === 0)
+            if (Object.keys(groupState.userList).length === 0)
                 return deleteGroupData({ documentID: groupID });
-
-            const previousUserDetails = groupState.userList.filter(
-                (user) => user.userID === authState.currentUser.uid
-            );
-            console.log(groupState.userList);
-            console.log(previousUserDetails[0]);
 
             await removeUserToGroupData({
                 documentID: groupID,
-                data: previousUserDetails,
+                userID: authState.currentUser.uid,
             });
             selectNoGroup();
         } catch (error) {
@@ -153,6 +196,8 @@ const GroupProvider = ({ children }) => {
                 groupState,
                 setSelectedGroupID,
                 getSelectedGroupID,
+                createGroup,
+                addUserToGroup,
                 selectNoGroup,
                 removeUserFromGroupData,
                 renameGroupName,

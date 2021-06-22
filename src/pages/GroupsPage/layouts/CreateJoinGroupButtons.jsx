@@ -7,9 +7,11 @@ import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import TextField from "@material-ui/core/TextField";
 import DialogModal from "library/layouts/Dialogs/DialogModal";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
+import { useGroupContext } from "library/provider/Groups/GroupProvider";
 
 const CreateJoinGroupButtons = (props) => {
-    const { createGroup, joinGroup } = useAuthContext();
+    const { joinGroup } = useAuthContext();
+    const { createGroup, addUserToGroup } = useGroupContext();
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false);
     const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
@@ -32,12 +34,14 @@ const CreateJoinGroupButtons = (props) => {
     const createNewGroup = async () => {
         closeCreateDialogOpen();
         const groupID = await createGroup({ groupName: inputText });
+        await joinGroup({ groupCode: groupID });
         setInputText(groupID);
         openCopyDialogOpen();
     };
 
     const createJoinGroup = async () => {
         closeJoinDialogOpen();
+        await addUserToGroup({ groupCode: inputText });
         await joinGroup({ groupCode: inputText });
         setInputText("");
     };

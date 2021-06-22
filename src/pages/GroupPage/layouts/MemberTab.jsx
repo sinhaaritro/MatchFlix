@@ -7,14 +7,13 @@ import { useGroupContext } from "library/provider/Groups/GroupProvider";
 
 const MemberTab = (props) => {
     const { groupState } = useGroupContext();
-
     return (
         <>
-            {groupState?.userList.length && (
+            {groupState?.userList && (
                 <List>
-                    {groupState.userList.map((item) => (
-                        <ListItem button key={item.userID}>
-                            <ListItemText primary={item.userName} />
+                    {Object.entries(groupState.userList).map(([key, value]) => (
+                        <ListItem button key={key}>
+                            <ListItemText primary={value.userName} />
                         </ListItem>
                     ))}
                 </List>

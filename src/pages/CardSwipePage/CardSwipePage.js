@@ -6,7 +6,10 @@ import * as Constants from "library/constants/constants";
 import { useGroupContext } from "library/provider/Groups/GroupProvider";
 
 const CardSwipePage = ({ location }) => {
-    const { groupState, updateUserToGroupData } = useGroupContext();
+    const {
+        // groupState,
+        updateUserToGroupData,
+    } = useGroupContext();
     const movieList = location.props.movieDetails;
     const [currentCard, setCurrentCard] = useState(0);
     const [selectedCards, setSelectedCards] = useState([]);
