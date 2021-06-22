@@ -8,6 +8,7 @@ import ProfilePage from "pages/ProfilePage/ProfilePage";
 import LogInSignUp from "pages/LogInSignUpPage/LogInSignUp";
 import GroupPage from "pages/GroupPage/GroupPage";
 import GroupConfigurationPage from "pages/GroupConfigurationPage/GroupConfigurationPage";
+import CardSwipePage from "pages/CardSwipePage/CardSwipePage";
 
 const AppRouter = (props) => {
     return (
@@ -19,6 +20,7 @@ const AppRouter = (props) => {
                     path="/group-configuration/:id"
                     component={GroupConfigurationPage}
                 />
+                <Route path="/card-swipe/:id" component={CardSwipePage} />
                 <Route path="/login" component={LogInSignUp} />
                 <Route path="/movies" component={MoviesPage} />
                 <Route path="/movie/:id" component={MovieDetailsPage} />
