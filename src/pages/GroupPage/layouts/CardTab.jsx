@@ -16,7 +16,6 @@ const CardTab = (props) => {
                     <Button
                         component={NavLink}
                         to={`/group-configuration/${id}`}
-                        push="true"
                     >
                         Configure Cards
                     </Button>
