@@ -11,7 +11,7 @@ import {
     createUserData,
     updateUserData,
     createGroupData,
-    joinGroupData,
+    addUserToGroupData,
     getGroupData,
 } from "library/utilities/firebaseFirestore";
 import reducer from "./AuthReducer";
@@ -174,7 +174,7 @@ const AuthProvider = ({ children }) => {
             );
             if (filteredList.length !== 0) throw new Error("Already in group");
 
-            await joinGroupData({
+            await addUserToGroupData({
                 documentID: groupCode,
                 data: {
                     selectedCard: [],

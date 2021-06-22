@@ -10,7 +10,8 @@ import reducer from "./GroupReducer";
 import * as GroupConstants from "./GroupConstant";
 import { useAuthContext } from "library/provider/Authentication/AuthProvider";
 import {
-    removeGroupData,
+    addUserToGroupData,
+    removeUserToGroupData,
     updateFirestoreGroupData,
     deleteGroupData,
 } from "library/utilities/firebaseFirestore";
@@ -65,12 +66,15 @@ const GroupProvider = ({ children }) => {
             if (userList.length === 0)
                 return deleteGroupData({ documentID: groupID });
 
-            await removeGroupData({
+            const previousUserDetails = groupState.userList.filter(
+                (user) => user.userID === authState.currentUser.uid
+            );
+            console.log(groupState.userList);
+            console.log(previousUserDetails[0]);
+
+            await removeUserToGroupData({
                 documentID: groupID,
-                data: {
-                    userID: authState.currentUser.uid,
-                    userName: authState.userProfile.username,
-                },
+                data: previousUserDetails,
             });
             selectNoGroup();
         } catch (error) {
@@ -102,6 +106,39 @@ const GroupProvider = ({ children }) => {
     //     });
     // };
 
+    const updateUserToGroupData = async (selectedCard) => {
+        setLoading();
+        try {
+            const previousUserDetails = groupState.userList.filter(
+                (user) => user.userID === authState.currentUser.uid
+            );
+            console.log(groupState.userList);
+            console.log(previousUserDetails[0]);
+            await removeUserToGroupData({
+                documentID: groupID,
+                data: {
+                    userID: authState.currentUser.uid,
+                    userName: authState.userProfile.username,
+                },
+            });
+            // await removeUserToGroupData({
+            //     documentID: groupID,
+            //     data: previousUserDetails,
+            // });
+            await addUserToGroupData({
+                documentID: groupID,
+                data: {
+                    selectedCard: selectedCard,
+                    isDone: true,
+                    userID: authState.currentUser.uid,
+                    userName: authState.userProfile.username,
+                },
+            });
+        } catch (error) {
+            setError(error);
+        }
+    };
+
     useEffect(() => {
         console.log(groupID);
         if (!groupID) return;
@@ -121,6 +158,7 @@ const GroupProvider = ({ children }) => {
                 renameGroupName,
                 updateGroupData,
                 // addCards,
+                updateUserToGroupData,
             }}
         >
             {children}

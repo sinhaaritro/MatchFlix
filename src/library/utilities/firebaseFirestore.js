@@ -63,7 +63,7 @@ export const createGroupData = async ({ data }) => {
     });
 };
 
-export const joinGroupData = async ({ documentID, data }) =>
+export const addUserToGroupData = async ({ documentID, data }) =>
     await updateDataWithDocumentID({
         collectionName: "groups",
         documentID: documentID,
@@ -72,7 +72,7 @@ export const joinGroupData = async ({ documentID, data }) =>
         },
     });
 
-export const removeGroupData = async ({ documentID, data }) =>
+export const removeUserToGroupData = async ({ documentID, data }) =>
     await updateDataWithDocumentID({
         collectionName: "groups",
         documentID: documentID,
