@@ -180,8 +180,8 @@ const GroupProvider = ({ children }) => {
                 ).length === 0
             ) {
                 var finalCardList = {};
-                Object.entries(groupState.userList).map(([key, user]) =>
-                    user.selectedCard.map((card) => {
+                Object.entries(groupState.userList).forEach(([key, user]) =>
+                    user.selectedCard.forEach((card) => {
                         if (finalCardList[card])
                             finalCardList[card] = finalCardList[card] + 1;
                         else finalCardList[card] = 1;
@@ -190,7 +190,6 @@ const GroupProvider = ({ children }) => {
                 var entries = Object.entries(finalCardList);
                 var sorted = entries.sort((a, b) => b[1] - a[1]);
                 setFinalCard(sorted);
-                console.log(sorted);
             } else {
                 setFinalCard({});
             }
@@ -200,7 +199,6 @@ const GroupProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        console.log(groupID);
         if (!groupID) return;
 
         const unsbscribe = watchGroups();

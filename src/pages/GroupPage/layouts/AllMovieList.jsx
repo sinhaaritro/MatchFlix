@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import MovieCard from "./MovieCard";
 
 const AllMovieList = ({ list }) => {
-    console.log(list);
     return (
         <>
             <Grid container spacing={2}>

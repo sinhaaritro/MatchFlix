@@ -25,7 +25,6 @@ const CardSwipePage = ({ location }) => {
     };
 
     const finish = async () => {
-        console.log("selectedCards", selectedCards);
         await updateUserToGroupData({
             selectedCard: selectedCards,
             isDone: true,
