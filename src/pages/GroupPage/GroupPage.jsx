@@ -30,7 +30,7 @@ function GroupPage(props) {
                 color="primary"
                 component={NavLink}
                 to={{
-                    pathname: `/card-swipe/${id}`,
+                    pathname: `/card-swipe`,
                     props: { movieDetails: movieData },
                 }}
             >

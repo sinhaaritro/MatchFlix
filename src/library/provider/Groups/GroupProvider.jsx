@@ -23,6 +23,7 @@ const GroupContext = React.createContext(null);
 const GroupProvider = ({ children }) => {
     const { authState } = useAuthContext();
     const [groupID, setGroupID] = useState();
+    const [finalCard, setFinalCard] = useState({});
     const [groupState, groupDispatch] = useReducer(
         reducer,
         GroupConstants.Initial_State
@@ -173,10 +174,26 @@ const GroupProvider = ({ children }) => {
 
     const selectFinalCard = async () => {
         try {
-            // Check if everyone has done command
-            // Goto a different page
-            // Compute the results in array
-            const updateProperty = `userList.${authState.currentUser.uid}`;
+            if (
+                Object.entries(groupState.userList).filter(
+                    ([key, user]) => user.isDone !== true
+                ).length === 0
+            ) {
+                var finalCardList = {};
+                Object.entries(groupState.userList).map(([key, user]) =>
+                    user.selectedCard.map((card) => {
+                        if (finalCardList[card])
+                            finalCardList[card] = finalCardList[card] + 1;
+                        else finalCardList[card] = 1;
+                    })
+                );
+                var entries = Object.entries(finalCardList);
+                var sorted = entries.sort((a, b) => b[1] - a[1]);
+                setFinalCard(sorted);
+                console.log(sorted);
+            } else {
+                setFinalCard({});
+            }
         } catch (error) {
             setError(error);
         }
@@ -204,6 +221,7 @@ const GroupProvider = ({ children }) => {
                 updateGroupData,
                 // addCards,
                 updateUserToGroupData,
+                finalCard,
                 selectFinalCard,
             }}
         >
