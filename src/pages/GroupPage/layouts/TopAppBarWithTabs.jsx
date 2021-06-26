@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import TopAppBar from "library/layouts/TopAppBar/TopAppBar";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
@@ -44,6 +44,6 @@ const TopAppBarWithTabs = ({ groupName }) => {
     );
 };
 
-TopAppBarWithTabs.propTypes = {};
+TopAppBarWithTabs.propTypes = { groupName: PropTypes.string };
 
 export default TopAppBarWithTabs;

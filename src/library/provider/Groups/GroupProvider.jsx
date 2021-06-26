@@ -149,34 +149,34 @@ const GroupProvider = ({ children }) => {
     //     });
     // };
 
-    const updateUserToGroupData = async (selectedCard) => {
+    const updateUserToGroupData = async ({
+        selectedCard = [],
+        isDone = false,
+    }) => {
         setLoading();
         try {
-            const previousUserDetails = groupState.userList.filter(
-                (user) => user.userID === authState.currentUser.uid
-            );
-            console.log(groupState.userList);
-            console.log(previousUserDetails[0]);
-            await removeUserToGroupData({
-                documentID: groupID,
-                data: {
-                    userID: authState.currentUser.uid,
-                    userName: authState.userProfile.username,
-                },
-            });
-            // await removeUserToGroupData({
-            //     documentID: groupID,
-            //     data: previousUserDetails,
-            // });
+            const updateProperty = `userList.${authState.currentUser.uid}`;
             await addUserToGroupData({
                 documentID: groupID,
                 data: {
-                    selectedCard: selectedCard,
-                    isDone: true,
-                    userID: authState.currentUser.uid,
-                    userName: authState.userProfile.username,
+                    [updateProperty]: {
+                        isDone: isDone,
+                        selectedCard: selectedCard,
+                        userName: authState.userProfile.username,
+                    },
                 },
             });
+        } catch (error) {
+            setError(error);
+        }
+    };
+
+    const selectFinalCard = async () => {
+        try {
+            // Check if everyone has done command
+            // Goto a different page
+            // Compute the results in array
+            const updateProperty = `userList.${authState.currentUser.uid}`;
         } catch (error) {
             setError(error);
         }
@@ -204,6 +204,7 @@ const GroupProvider = ({ children }) => {
                 updateGroupData,
                 // addCards,
                 updateUserToGroupData,
+                selectFinalCard,
             }}
         >
             {children}

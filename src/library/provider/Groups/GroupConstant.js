@@ -8,7 +8,6 @@ export const ACTIONS = {
 export const Initial_State = {
     isLoading: false,
     isError: false,
-    selectedGroupID: "",
     allCards: [],
     name: "",
     region: "",
